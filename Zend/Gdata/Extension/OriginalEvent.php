@@ -76,35 +76,6 @@ class Zend_Gdata_Extension_OriginalEvent extends Zend_Gdata_Extension
         return $element;
     }
 
-    protected function takeAttributeFromDOM($attribute)
-    {
-        switch ($attribute->localName) {
-        case 'id':
-            $this->_id = $attribute->nodeValue;
-            break;
-        case 'href':
-            $this->_href = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
-    }
-
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-            case $this->lookupNamespace('gd') . ':' . 'when';
-                $when = new Zend_Gdata_Extension_When();
-                $when->transferFromDOM($child);
-                $this->_when = $when;
-                break;
-        default:
-            parent::takeChildFromDOM($child);
-            break;
-        }
-    }
-
     public function getId()
     {
         return $this->_id;
@@ -136,6 +107,35 @@ class Zend_Gdata_Extension_OriginalEvent extends Zend_Gdata_Extension
     {
         $this->_when = $value;
         return $this;
+    }
+
+    protected function takeAttributeFromDOM($attribute)
+    {
+        switch ($attribute->localName) {
+            case 'id':
+                $this->_id = $attribute->nodeValue;
+                break;
+            case 'href':
+                $this->_href = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
+    }
+
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('gd') . ':' . 'when';
+                $when = new Zend_Gdata_Extension_When();
+                $when->transferFromDOM($child);
+                $this->_when = $when;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 

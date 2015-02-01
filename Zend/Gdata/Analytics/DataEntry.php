@@ -51,6 +51,46 @@ class Zend_Gdata_Analytics_DataEntry extends Zend_Gdata_Entry
     }
 
     /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getValue($name)
+    {
+        if (null !== ($metric = $this->getMetric($name))) {
+            return $metric;
+        }
+        return $this->getDimension($name);
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getMetric($name)
+    {
+        foreach ($this->_metrics as $metric) {
+            if ($metric->getName() == $name) {
+                return $metric;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getDimension($name)
+    {
+        foreach ($this->_dimensions as $dimension) {
+            if ($dimension->getName() == $name) {
+                return $dimension;
+            }
+        }
+        return null;
+    }
+
+    /**
      * @param DOMElement $child
      * @return void
      */
@@ -72,45 +112,5 @@ class Zend_Gdata_Analytics_DataEntry extends Zend_Gdata_Entry
                 parent::takeChildFromDOM($child);
                 break;
         }
-    }
-
-    /**
-     * @param string $name 
-     * @return mixed
-     */
-    public function getDimension($name)
-    {
-        foreach ($this->_dimensions as $dimension) {
-            if ($dimension->getName() == $name) {
-                return $dimension;
-            }
-        }
-        return null;
-    }
-    
-    /** 
-     * @param string $name 
-     * @return mixed
-     */
-    public function getMetric($name)
-    {
-        foreach ($this->_metrics as $metric) {
-            if ($metric->getName() == $name) {
-                return $metric;
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * @param string $name 
-     * @return mixed
-     */
-    public function getValue($name)
-    {
-        if (null !== ($metric = $this->getMetric($name))) {
-            return $metric;
-        }
-        return $this->getDimension($name);
     }
 }

@@ -88,21 +88,12 @@ class Zend_Gdata_Gapps_Extension_Quota extends Zend_Gdata_Extension
     }
 
     /**
-     * Given a DOMNode representing an attribute, tries to map the data into
-     * instance members.  If no mapping is defined, the name and value are
-     * stored in an array.
-     *
-     * @param DOMNode $attribute The DOMNode attribute needed to be handled
+     * Magic toString method allows using this directly via echo
+     * Works best in PHP >= 4.2.0
      */
-    protected function takeAttributeFromDOM($attribute)
+    public function __toString()
     {
-        switch ($attribute->localName) {
-        case 'limit':
-            $this->_limit = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
+        return $this->getLimit();
     }
 
     /**
@@ -131,12 +122,21 @@ class Zend_Gdata_Gapps_Extension_Quota extends Zend_Gdata_Extension
     }
 
     /**
-     * Magic toString method allows using this directly via echo
-     * Works best in PHP >= 4.2.0
+     * Given a DOMNode representing an attribute, tries to map the data into
+     * instance members.  If no mapping is defined, the name and value are
+     * stored in an array.
+     *
+     * @param DOMNode $attribute The DOMNode attribute needed to be handled
      */
-    public function __toString()
+    protected function takeAttributeFromDOM($attribute)
     {
-        return $this->getLimit();
+        switch ($attribute->localName) {
+            case 'limit':
+                $this->_limit = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 }

@@ -75,6 +75,17 @@ class Zend_Gdata_Calendar_EventFeed extends Zend_Gdata_Feed
         return $element;
     }
 
+    public function getTimezone()
+    {
+        return $this->_timezone;
+    }
+
+    public function setTimezone($value)
+    {
+        $this->_timezone = $value;
+        return $this;
+    }
+
     protected function takeChildFromDOM($child)
     {
         $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
@@ -90,17 +101,6 @@ class Zend_Gdata_Calendar_EventFeed extends Zend_Gdata_Feed
                 parent::takeChildFromDOM($child);
                 break;
         }
-    }
-
-    public function getTimezone()
-    {
-        return $this->_timezone;
-    }
-
-    public function setTimezone($value)
-    {
-        $this->_timezone = $value;
-        return $this;
     }
 
 }

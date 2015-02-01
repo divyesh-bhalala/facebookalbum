@@ -84,26 +84,6 @@ class Zend_Gdata_Books_Extension_Review extends Zend_Gdata_Extension
     }
 
     /**
-     * Extracts XML attributes from the DOM and converts them to the
-     * appropriate object members.
-     *
-     * @param DOMNode $attribute The DOMNode attribute to be handled.
-     */
-    protected function takeAttributeFromDOM($attribute)
-    {
-        switch ($attribute->localName) {
-        case 'lang':
-            $this->_lang = $attribute->nodeValue;
-            break;
-        case 'type':
-            $this->_type = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
-    }
-
-    /**
      * Returns the language of link title
      *
      * @return string The lang
@@ -111,16 +91,6 @@ class Zend_Gdata_Books_Extension_Review extends Zend_Gdata_Extension
     public function getLang()
     {
         return $this->_lang;
-    }
-
-    /**
-     * Returns the type of text construct (typically 'text', 'html' or 'xhtml')
-     *
-     * @return string The type
-     */
-    public function getType()
-    {
-        return $this->_type;
     }
 
     /**
@@ -136,6 +106,16 @@ class Zend_Gdata_Books_Extension_Review extends Zend_Gdata_Extension
     }
 
     /**
+     * Returns the type of text construct (typically 'text', 'html' or 'xhtml')
+     *
+     * @return string The type
+     */
+    public function getType()
+    {
+        return $this->_type;
+    }
+
+    /**
      * Sets the type of text construct (typically 'text', 'html' or 'xhtml')
      *
      * @param string $type type of text construct (typically 'text', 'html' or 'xhtml')
@@ -145,6 +125,26 @@ class Zend_Gdata_Books_Extension_Review extends Zend_Gdata_Extension
     {
         $this->_type = $type;
         return $this;
+    }
+
+    /**
+     * Extracts XML attributes from the DOM and converts them to the
+     * appropriate object members.
+     *
+     * @param DOMNode $attribute The DOMNode attribute to be handled.
+     */
+    protected function takeAttributeFromDOM($attribute)
+    {
+        switch ($attribute->localName) {
+            case 'lang':
+                $this->_lang = $attribute->nodeValue;
+                break;
+            case 'type':
+                $this->_type = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 

@@ -66,21 +66,6 @@ class Zend_Gdata_Spreadsheets_CellEntry extends Zend_Gdata_Entry
         return $element;
     }
 
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-        case $this->lookupNamespace('gs') . ':' . 'cell';
-            $cell = new Zend_Gdata_Spreadsheets_Extension_Cell();
-            $cell->transferFromDOM($child);
-            $this->_cell = $cell;
-            break;
-        default:
-            parent::takeChildFromDOM($child);
-            break;
-        }
-    }
-
     /**
      * Gets the Cell element of this Cell Entry.
      * @return Zend_Gdata_Spreadsheets_Extension_Cell
@@ -93,12 +78,27 @@ class Zend_Gdata_Spreadsheets_CellEntry extends Zend_Gdata_Entry
     /**
      * Sets the Cell element of this Cell Entry.
      * @param Zend_Gdata_Spreadsheets_Extension_Cell $cell
-		 * @return Zend_Gdata_Spreadsheets_CellEntry
+     * @return Zend_Gdata_Spreadsheets_CellEntry
      */
     public function setCell($cell)
     {
         $this->_cell = $cell;
         return $this;
+    }
+
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('gs') . ':' . 'cell';
+                $cell = new Zend_Gdata_Spreadsheets_Extension_Cell();
+                $cell->transferFromDOM($child);
+                $this->_cell = $cell;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 }

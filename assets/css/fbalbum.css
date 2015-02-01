@@ -1,56 +1,56 @@
-
 @media only screen and (max-width: 40em) {
     #main-content {
         margin: 20px 0 20px 0;
-        padding-bottom: 0px; }
-    #profile
-    {
+        padding-bottom: 0px;
+    }
+
+    #profile {
         margin-left: auto;
         margin-right: auto;
     }
-    #albumsss1
-    {
+
+    #albumsss1 {
         margin-left: auto;
         margin-right: auto;
     }
 }
-.margin_top_2
-{
+
+.margin_top_2 {
     margin-top: 2%;
 }
 
-.img_login
-{
+.img_login {
     margin-top: 20%;
 
 }
-.page-color
-{
+
+.page-color {
     background-color: rgba(51, 111, 255, 0.28);
 }
-.login_btn
-{
+
+.login_btn {
     padding-top: 0;
     padding-bottom: 0;
 }
-.album
-{  padding:  0 5px;
+
+.album {
+    padding: 0 5px;
 
 }
-.album_info
-{  border: solid #0078a0;
+
+.album_info {
+    border: solid #0078a0;
     width: 100%;
 
 }
 
-#backalbum
-{
+#backalbum {
     position: fixed;
     margin-left: 50px;
     margin-top: 50px;
 }
-.done
-{
+
+.done {
     width: 100%;
 }
 

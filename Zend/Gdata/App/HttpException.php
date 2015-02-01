@@ -84,14 +84,17 @@ class Zend_Gdata_App_HttpException extends Zend_Gdata_App_Exception
     }
 
     /**
-     * Set the Zend_Http_Response.
+     * Get the body of the Zend_Http_Response
      *
-     * @param Zend_Http_Response $response
+     * @return string
      */
-    public function setResponse($response)
+    public function getRawResponseBody()
     {
-        $this->_response = $response;
-        return $this;
+        if ($this->getResponse()) {
+            $response = $this->getResponse();
+            return $response->getRawBody();
+        }
+        return null;
     }
 
     /**
@@ -105,17 +108,14 @@ class Zend_Gdata_App_HttpException extends Zend_Gdata_App_Exception
     }
 
     /**
-     * Get the body of the Zend_Http_Response
+     * Set the Zend_Http_Response.
      *
-     * @return string
+     * @param Zend_Http_Response $response
      */
-    public function getRawResponseBody()
+    public function setResponse($response)
     {
-        if ($this->getResponse()) {
-            $response = $this->getResponse();
-            return $response->getRawBody();
-        }
-        return null;
+        $this->_response = $response;
+        return $this;
     }
 
 }

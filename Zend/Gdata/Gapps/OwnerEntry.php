@@ -94,29 +94,6 @@ class Zend_Gdata_Gapps_OwnerEntry extends Zend_Gdata_Entry
     }
 
     /**
-     * Creates individual Entry objects of the appropriate type and
-     * stores them as owners of this entry based upon DOM data.
-     *
-     * @param DOMNode $child The DOMNode to process
-     */
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-
-        switch ($absoluteNodeName) {
-
-            case $this->lookupNamespace('apps') . ':' . 'property';
-                $property = new Zend_Gdata_Gapps_Extension_Property();
-                $property->transferFromDOM($child);
-                $this->_property[] = $property;
-                break;
-            default:
-                parent::takeChildFromDOM($child);
-                break;
-        }
-    }
-
-    /**
      * Returns all property tags for this entry
      *
      * @param string $rel The rel value of the property to be found. If null,
@@ -152,6 +129,29 @@ class Zend_Gdata_Gapps_OwnerEntry extends Zend_Gdata_Entry
     {
         $this->_property = $value;
         return $this;
+    }
+
+    /**
+     * Creates individual Entry objects of the appropriate type and
+     * stores them as owners of this entry based upon DOM data.
+     *
+     * @param DOMNode $child The DOMNode to process
+     */
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+
+        switch ($absoluteNodeName) {
+
+            case $this->lookupNamespace('apps') . ':' . 'property';
+                $property = new Zend_Gdata_Gapps_Extension_Property();
+                $property->transferFromDOM($child);
+                $this->_property[] = $property;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 }

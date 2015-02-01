@@ -19,7 +19,7 @@
  * @version    $Id$
  */
 
- 
+
 /**
  * @category   Zend
  * @package    Zend_Xml_SecurityScan
@@ -29,20 +29,6 @@
 class Zend_Xml_Security
 {
     const ENTITY_DETECT = 'Detected use of ENTITY in XML, disabled to prevent XXE/XEE attacks';
-
-    /**
-     * Heuristic scan to detect entity in XML
-     *
-     * @param  string $xml
-     * @throws Zend_Xml_Exception
-     */
-    protected static function heuristicScan($xml)
-    {
-        if (strpos($xml, '<!ENTITY') !== false) {
-            require_once 'Exception.php';
-            throw new Zend_Xml_Exception(self::ENTITY_DETECT);
-        }
-    }
 
     /**
      * @param integer $errno
@@ -57,6 +43,25 @@ class Zend_Xml_Security
             return true;
         }
         return false;
+    }
+
+    /**
+     * Scan XML file for potential XXE/XEE attacks
+     *
+     * @param  string $file
+     * @param  DOMDocument $dom
+     * @throws Zend_Xml_Exception
+     * @return SimpleXMLElement|DomDocument
+     */
+    public static function scanFile($file, DOMDocument $dom = null)
+    {
+        if (!file_exists($file)) {
+            require_once 'Exception.php';
+            throw new Zend_Xml_Exception(
+                "The file $file specified doesn't exist"
+            );
+        }
+        return self::scan(file_get_contents($file), $dom);
     }
 
     /**
@@ -126,25 +131,6 @@ class Zend_Xml_Security
     }
 
     /**
-     * Scan XML file for potential XXE/XEE attacks
-     *
-     * @param  string $file
-     * @param  DOMDocument $dom
-     * @throws Zend_Xml_Exception
-     * @return SimpleXMLElement|DomDocument
-     */
-    public static function scanFile($file, DOMDocument $dom = null)
-    {
-        if (!file_exists($file)) {
-            require_once 'Exception.php';
-            throw new Zend_Xml_Exception(
-                "The file $file specified doesn't exist"
-            );
-        }
-        return self::scan(file_get_contents($file), $dom);
-    }
-
-    /**
      * Return true if PHP is running with PHP-FPM
      *
      * @return boolean
@@ -155,5 +141,19 @@ class Zend_Xml_Security
             return true;
         }
         return false;
+    }
+
+    /**
+     * Heuristic scan to detect entity in XML
+     *
+     * @param  string $xml
+     * @throws Zend_Xml_Exception
+     */
+    protected static function heuristicScan($xml)
+    {
+        if (strpos($xml, '<!ENTITY') !== false) {
+            require_once 'Exception.php';
+            throw new Zend_Xml_Exception(self::ENTITY_DETECT);
+        }
     }
 }

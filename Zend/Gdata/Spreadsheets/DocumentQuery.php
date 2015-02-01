@@ -63,6 +63,15 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
     }
 
     /**
+     * Gets the spreadsheet key for this query.
+     * @return string spreadsheet key
+     */
+    public function getSpreadsheetKey()
+    {
+        return $this->_spreadsheetKey;
+    }
+
+    /**
      * Sets the spreadsheet key for this query.
      * @param string $value
      * @return Zend_Gdata_Spreadsheets_CellQuery Provides a fluent interface
@@ -74,12 +83,12 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
     }
 
     /**
-     * Gets the spreadsheet key for this query.
-     * @return string spreadsheet key
+     * Gets the worksheet id for this query.
+     * @return string worksheet id
      */
-    public function getSpreadsheetKey()
+    public function getWorksheetId()
     {
-        return $this->_spreadsheetKey;
+        return $this->_worksheetId;
     }
 
     /**
@@ -94,12 +103,12 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
     }
 
     /**
-     * Gets the worksheet id for this query.
-     * @return string worksheet id
+     * Gets the document type for this query.
+     * @return string document type
      */
-    public function getWorksheetId()
+    public function getDocumentType()
     {
-        return $this->_worksheetId;
+        return $this->_documentType;
     }
 
     /**
@@ -114,12 +123,12 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
     }
 
     /**
-     * Gets the document type for this query.
-     * @return string document type
+     * Gets the projection for this query.
+     * @return string projection
      */
-    public function getDocumentType()
+    public function getProjection()
     {
-        return $this->_documentType;
+        return $this->_projection;
     }
 
     /**
@@ -134,6 +143,15 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
     }
 
     /**
+     * Gets the visibility for this query.
+     * @return string visibility
+     */
+    public function getVisibility()
+    {
+        return $this->_visibility;
+    }
+
+    /**
      * Sets the visibility for this query.
      * @return Zend_Gdata_Spreadsheets_DocumentQuery Provides a fluent interface
      */
@@ -141,24 +159,6 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
     {
         $this->_visibility = $value;
         return $this;
-    }
-
-    /**
-     * Gets the projection for this query.
-     * @return string projection
-     */
-    public function getProjection()
-    {
-        return $this->_projection;
-    }
-
-    /**
-     * Gets the visibility for this query.
-     * @return string visibility
-     */
-    public function getVisibility()
-    {
-        return $this->_visibility;
     }
 
     /**
@@ -217,28 +217,6 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
         }
     }
 
-    private function appendVisibilityProjection()
-    {
-        $uri = '';
-
-        if ($this->_visibility != null) {
-            $uri .= '/'.$this->_visibility;
-        } else {
-            require_once 'Zend/Gdata/App/Exception.php';
-            throw new Zend_Gdata_App_Exception('A visibility must be provided for document queries.');
-        }
-
-        if ($this->_projection != null) {
-            $uri .= '/'.$this->_projection;
-        } else {
-            require_once 'Zend/Gdata/App/Exception.php';
-            throw new Zend_Gdata_App_Exception('A projection must be provided for document queries.');
-        }
-
-        return $uri;
-    }
-
-
     /**
      * Gets the full query URL for this query.
      * @return string url
@@ -248,7 +226,7 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
         $uri = $this->_defaultFeedUri;
 
         if ($this->_documentType != null) {
-            $uri .= '/'.$this->_documentType;
+            $uri .= '/' . $this->_documentType;
         } else {
             require_once 'Zend/Gdata/App/Exception.php';
             throw new Zend_Gdata_App_Exception('A document type must be provided for document queries.');
@@ -257,22 +235,43 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
         if ($this->_documentType == 'spreadsheets') {
             $uri .= $this->appendVisibilityProjection();
             if ($this->_spreadsheetKey != null) {
-                $uri .= '/'.$this->_spreadsheetKey;
+                $uri .= '/' . $this->_spreadsheetKey;
             }
         } else if ($this->_documentType == 'worksheets') {
             if ($this->_spreadsheetKey != null) {
-                $uri .= '/'.$this->_spreadsheetKey;
+                $uri .= '/' . $this->_spreadsheetKey;
             } else {
                 require_once 'Zend/Gdata/App/Exception.php';
                 throw new Zend_Gdata_App_Exception('A spreadsheet key must be provided for worksheet document queries.');
             }
             $uri .= $this->appendVisibilityProjection();
             if ($this->_worksheetId != null) {
-                $uri .= '/'.$this->_worksheetId;
+                $uri .= '/' . $this->_worksheetId;
             }
         }
 
         $uri .= $this->getQueryString();
+        return $uri;
+    }
+
+    private function appendVisibilityProjection()
+    {
+        $uri = '';
+
+        if ($this->_visibility != null) {
+            $uri .= '/' . $this->_visibility;
+        } else {
+            require_once 'Zend/Gdata/App/Exception.php';
+            throw new Zend_Gdata_App_Exception('A visibility must be provided for document queries.');
+        }
+
+        if ($this->_projection != null) {
+            $uri .= '/' . $this->_projection;
+        } else {
+            require_once 'Zend/Gdata/App/Exception.php';
+            throw new Zend_Gdata_App_Exception('A projection must be provided for document queries.');
+        }
+
         return $uri;
     }
 

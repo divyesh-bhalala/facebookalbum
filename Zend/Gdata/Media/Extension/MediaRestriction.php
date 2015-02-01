@@ -58,7 +58,7 @@ class Zend_Gdata_Media_Extension_MediaRestriction extends Zend_Gdata_Extension
      * @param string $relationship
      * @param string $type
      */
-    public function __construct($text = null, $relationship = null,  $type = null)
+    public function __construct($text = null, $relationship = null, $type = null)
     {
         $this->registerAllNamespaces(Zend_Gdata_Media::$namespaces);
         parent::__construct();
@@ -87,27 +87,6 @@ class Zend_Gdata_Media_Extension_MediaRestriction extends Zend_Gdata_Extension
             $element->setAttribute('type', $this->_type);
         }
         return $element;
-    }
-
-    /**
-     * Given a DOMNode representing an attribute, tries to map the data into
-     * instance members.  If no mapping is defined, the name and value are
-     * stored in an array.
-     *
-     * @param DOMNode $attribute The DOMNode attribute needed to be handled
-     */
-    protected function takeAttributeFromDOM($attribute)
-    {
-        switch ($attribute->localName) {
-        case 'relationship':
-            $this->_relationship = $attribute->nodeValue;
-            break;
-        case 'type':
-            $this->_type = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
     }
 
     /**
@@ -144,6 +123,27 @@ class Zend_Gdata_Media_Extension_MediaRestriction extends Zend_Gdata_Extension
     {
         $this->_type = $value;
         return $this;
+    }
+
+    /**
+     * Given a DOMNode representing an attribute, tries to map the data into
+     * instance members.  If no mapping is defined, the name and value are
+     * stored in an array.
+     *
+     * @param DOMNode $attribute The DOMNode attribute needed to be handled
+     */
+    protected function takeAttributeFromDOM($attribute)
+    {
+        switch ($attribute->localName) {
+            case 'relationship':
+                $this->_relationship = $attribute->nodeValue;
+                break;
+            case 'type':
+                $this->_type = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 }

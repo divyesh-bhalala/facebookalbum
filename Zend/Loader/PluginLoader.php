@@ -42,49 +42,42 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      * @var string
      */
     protected static $_includeFileCache;
-
-    /**
-     * Instance loaded plugin paths
-     *
-     * @var array
-     */
-    protected $_loadedPluginPaths = array();
-
-    /**
-     * Instance loaded plugins
-     *
-     * @var array
-     */
-    protected $_loadedPlugins = array();
-
-    /**
-     * Instance registry property
-     *
-     * @var array
-     */
-    protected $_prefixToPaths = array();
-
     /**
      * Statically loaded plugin path mappings
      *
      * @var array
      */
     protected static $_staticLoadedPluginPaths = array();
-
     /**
      * Statically loaded plugins
      *
      * @var array
      */
     protected static $_staticLoadedPlugins = array();
-
     /**
      * Static registry property
      *
      * @var array
      */
     protected static $_staticPrefixToPaths = array();
-
+    /**
+     * Instance loaded plugin paths
+     *
+     * @var array
+     */
+    protected $_loadedPluginPaths = array();
+    /**
+     * Instance loaded plugins
+     *
+     * @var array
+     */
+    protected $_loadedPlugins = array();
+    /**
+     * Instance registry property
+     *
+     * @var array
+     */
+    protected $_prefixToPaths = array();
     /**
      * Whether to use a statically named registry for loading plugins
      *
@@ -102,10 +95,10 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
     {
         if (is_string($staticRegistryName) && !empty($staticRegistryName)) {
             $this->_useStaticRegistry = $staticRegistryName;
-            if(!isset(self::$_staticPrefixToPaths[$staticRegistryName])) {
+            if (!isset(self::$_staticPrefixToPaths[$staticRegistryName])) {
                 self::$_staticPrefixToPaths[$staticRegistryName] = array();
             }
-            if(!isset(self::$_staticLoadedPlugins[$staticRegistryName])) {
+            if (!isset(self::$_staticLoadedPlugins[$staticRegistryName])) {
                 self::$_staticLoadedPlugins[$staticRegistryName] = array();
             }
         }
@@ -113,28 +106,6 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
         foreach ($prefixToPaths as $prefix => $path) {
             $this->addPrefixPath($prefix, $path);
         }
-    }
-
-    /**
-     * Format prefix for internal use
-     *
-     * @param  string $prefix
-     * @return string
-     */
-    protected function _formatPrefix($prefix)
-    {
-        if($prefix == "") {
-            return $prefix;
-        }
-
-        $nsSeparator = (false !== strpos($prefix, '\\'))?'\\':'_';
-        $prefix = rtrim($prefix, $nsSeparator) . $nsSeparator;
-        //if $nsSeprator == "\" and the prefix ends in "_\" remove trailing \
-        //https://github.com/zendframework/zf1/issues/152
-        if(($nsSeparator == "\\") && (substr($prefix,-2) == "_\\")) {
-            $prefix = substr($prefix, 0, -1);
-        }
-        return $prefix;
     }
 
     /**
@@ -152,7 +123,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
         }
 
         $prefix = $this->_formatPrefix($prefix);
-        $path   = rtrim($path, '/\\') . '/';
+        $path = rtrim($path, '/\\') . '/';
 
         if ($this->_useStaticRegistry) {
             self::$_staticPrefixToPaths[$this->_useStaticRegistry][$prefix][] = $path;
@@ -165,6 +136,28 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
             }
         }
         return $this;
+    }
+
+    /**
+     * Format prefix for internal use
+     *
+     * @param  string $prefix
+     * @return string
+     */
+    protected function _formatPrefix($prefix)
+    {
+        if ($prefix == "") {
+            return $prefix;
+        }
+
+        $nsSeparator = (false !== strpos($prefix, '\\')) ? '\\' : '_';
+        $prefix = rtrim($prefix, $nsSeparator) . $nsSeparator;
+        //if $nsSeprator == "\" and the prefix ends in "_\" remove trailing \
+        //https://github.com/zendframework/zf1/issues/152
+        if (($nsSeparator == "\\") && (substr($prefix, -2) == "_\\")) {
+            $prefix = substr($prefix, 0, -1);
+        }
+        return $prefix;
     }
 
     /**
@@ -271,6 +264,38 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
     }
 
     /**
+     * Get path to plugin class
+     *
+     * @param  mixed $name
+     * @return string|false False if not found
+     */
+    public function getClassPath($name)
+    {
+        $name = $this->_formatName($name);
+        if ($this->_useStaticRegistry
+            && !empty(self::$_staticLoadedPluginPaths[$this->_useStaticRegistry][$name])
+        ) {
+            return self::$_staticLoadedPluginPaths[$this->_useStaticRegistry][$name];
+        } elseif (!empty($this->_loadedPluginPaths[$name])) {
+            return $this->_loadedPluginPaths[$name];
+        }
+
+        if ($this->isLoaded($name)) {
+            $class = $this->getClassName($name);
+            $r = new ReflectionClass($class);
+            $path = $r->getFileName();
+            if ($this->_useStaticRegistry) {
+                self::$_staticLoadedPluginPaths[$this->_useStaticRegistry][$name] = $path;
+            } else {
+                $this->_loadedPluginPaths[$name] = $path;
+            }
+            return $path;
+        }
+
+        return false;
+    }
+
+    /**
      * Normalize plugin name
      *
      * @param  string $name
@@ -278,7 +303,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      */
     protected function _formatName($name)
     {
-        return ucfirst((string) $name);
+        return ucfirst((string)$name);
     }
 
     /**
@@ -318,38 +343,6 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
     }
 
     /**
-     * Get path to plugin class
-     *
-     * @param  mixed $name
-     * @return string|false False if not found
-     */
-    public function getClassPath($name)
-    {
-        $name = $this->_formatName($name);
-        if ($this->_useStaticRegistry
-            && !empty(self::$_staticLoadedPluginPaths[$this->_useStaticRegistry][$name])
-        ) {
-            return self::$_staticLoadedPluginPaths[$this->_useStaticRegistry][$name];
-        } elseif (!empty($this->_loadedPluginPaths[$name])) {
-            return $this->_loadedPluginPaths[$name];
-        }
-
-        if ($this->isLoaded($name)) {
-            $class = $this->getClassName($name);
-            $r     = new ReflectionClass($class);
-            $path  = $r->getFileName();
-            if ($this->_useStaticRegistry) {
-                self::$_staticLoadedPluginPaths[$this->_useStaticRegistry][$name] = $path;
-            } else {
-                $this->_loadedPluginPaths[$name] = $path;
-            }
-            return $path;
-        }
-
-        return false;
-    }
-
-    /**
      * Load a plugin via the name provided
      *
      * @param  string $name
@@ -372,14 +365,14 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
             $registry = $this->_prefixToPaths;
         }
 
-        $registry  = array_reverse($registry, true);
-        $found     = false;
+        $registry = array_reverse($registry, true);
+        $found = false;
         if (false !== strpos($name, '\\')) {
             $classFile = str_replace('\\', DIRECTORY_SEPARATOR, $name) . '.php';
         } else {
             $classFile = str_replace('_', DIRECTORY_SEPARATOR, $name) . '.php';
         }
-        $incFile   = self::getIncludeFileCache();
+        $incFile = self::getIncludeFileCache();
         foreach ($registry as $prefix => $paths) {
             $className = $prefix . $name;
 
@@ -388,7 +381,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
                 break;
             }
 
-            $paths     = array_reverse($paths, true);
+            $paths = array_reverse($paths, true);
 
             foreach ($paths as $path) {
                 $loadFile = $path . $classFile;
@@ -416,14 +409,24 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
             }
             require_once 'Zend/Loader/PluginLoader/Exception.php';
             throw new Zend_Loader_PluginLoader_Exception($message);
-       }
+        }
 
         if ($this->_useStaticRegistry) {
-            self::$_staticLoadedPlugins[$this->_useStaticRegistry][$name]     = $className;
+            self::$_staticLoadedPlugins[$this->_useStaticRegistry][$name] = $className;
         } else {
-            $this->_loadedPlugins[$name]     = $className;
+            $this->_loadedPlugins[$name] = $className;
         }
         return $className;
+    }
+
+    /**
+     * Retrieve class file cache path
+     *
+     * @return string|null
+     */
+    public static function getIncludeFileCache()
+    {
+        return self::$_includeFileCache;
     }
 
     /**
@@ -457,16 +460,6 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
         }
 
         self::$_includeFileCache = $file;
-    }
-
-    /**
-     * Retrieve class file cache path
-     *
-     * @return string|null
-     */
-    public static function getIncludeFileCache()
-    {
-        return self::$_includeFileCache;
     }
 
     /**

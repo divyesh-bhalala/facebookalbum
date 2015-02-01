@@ -64,38 +64,12 @@ class Zend_Gdata_Gapps_NicknameQuery extends Zend_Gdata_Gapps_Query
      *          startNickname property.
      */
     public function __construct($domain = null, $nickname = null,
-            $username = null, $startNickname = null)
+                                $username = null, $startNickname = null)
     {
         parent::__construct($domain);
         $this->setNickname($nickname);
         $this->setUsername($username);
         $this->setStartNickname($startNickname);
-    }
-
-    /**
-     * Set the nickname to query for. When set, only users with a nickname
-     * matching this value will be returned in search results. Set to
-     * null to disable filtering by username.
-     *
-     * @param string $value The nickname to filter search results by, or null
-     *          to  disable.
-     */
-     public function setNickname($value)
-     {
-         $this->_nickname = $value;
-     }
-
-    /**
-     * Get the nickname to query for. If no nickname is set, null will be
-     * returned.
-     *
-     * @see setNickname
-     * @return string The nickname to filter search results by, or null if
-     *              disabled.
-     */
-    public function getNickname()
-    {
-        return $this->_nickname;
     }
 
     /**
@@ -110,26 +84,8 @@ class Zend_Gdata_Gapps_NicknameQuery extends Zend_Gdata_Gapps_Query
     {
         if ($value !== null) {
             $this->_params['username'] = $value;
-        }
-        else {
-            unset($this->_params['username']);
-        }
-    }
-
-    /**
-     * Get the username to query for. If no username is set, null will be
-     * returned.
-     *
-     * @see setUsername
-     * @return string The username to filter search results by, or null if
-     *              disabled.
-     */
-    public function getUsername()
-    {
-        if (array_key_exists('username', $this->_params)) {
-            return $this->_params['username'];
         } else {
-            return null;
+            unset($this->_params['username']);
         }
     }
 
@@ -146,6 +102,49 @@ class Zend_Gdata_Gapps_NicknameQuery extends Zend_Gdata_Gapps_Query
             $this->_params['startNickname'] = $value;
         } else {
             unset($this->_params['startNickname']);
+        }
+    }
+
+    /**
+     * Get the nickname to query for. If no nickname is set, null will be
+     * returned.
+     *
+     * @see setNickname
+     * @return string The nickname to filter search results by, or null if
+     *              disabled.
+     */
+    public function getNickname()
+    {
+        return $this->_nickname;
+    }
+
+    /**
+     * Set the nickname to query for. When set, only users with a nickname
+     * matching this value will be returned in search results. Set to
+     * null to disable filtering by username.
+     *
+     * @param string $value The nickname to filter search results by, or null
+     *          to  disable.
+     */
+    public function setNickname($value)
+    {
+        $this->_nickname = $value;
+    }
+
+    /**
+     * Get the username to query for. If no username is set, null will be
+     * returned.
+     *
+     * @see setUsername
+     * @return string The username to filter search results by, or null if
+     *              disabled.
+     */
+    public function getUsername()
+    {
+        if (array_key_exists('username', $this->_params)) {
+            return $this->_params['username'];
+        } else {
+            return null;
         }
     }
 

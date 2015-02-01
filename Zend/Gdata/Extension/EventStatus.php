@@ -56,15 +56,13 @@ class Zend_Gdata_Extension_EventStatus extends Zend_Gdata_Extension
         return $element;
     }
 
-    protected function takeAttributeFromDOM($attribute)
+    /**
+     * Magic toString method allows using this directly via echo
+     * Works best in PHP >= 4.2.0
+     */
+    public function __toString()
     {
-        switch ($attribute->localName) {
-        case 'value':
-            $this->_value = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
+        return $this->getValue();
     }
 
     /**
@@ -89,13 +87,15 @@ class Zend_Gdata_Extension_EventStatus extends Zend_Gdata_Extension
         return $this;
     }
 
-    /**
-     * Magic toString method allows using this directly via echo
-     * Works best in PHP >= 4.2.0
-     */
-    public function __toString()
+    protected function takeAttributeFromDOM($attribute)
     {
-        return $this->getValue();
+        switch ($attribute->localName) {
+            case 'value':
+                $this->_value = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 }

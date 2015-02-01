@@ -111,33 +111,6 @@ class Zend_Gdata_Gapps_EmailListEntry extends Zend_Gdata_Entry
     }
 
     /**
-     * Creates individual Entry objects of the appropriate type and
-     * stores them as members of this entry based upon DOM data.
-     *
-     * @param DOMNode $child The DOMNode to process
-     */
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-
-        switch ($absoluteNodeName) {
-            case $this->lookupNamespace('apps') . ':' . 'emailList';
-                $emailList = new Zend_Gdata_Gapps_Extension_EmailList();
-                $emailList->transferFromDOM($child);
-                $this->_emailList = $emailList;
-                break;
-            case $this->lookupNamespace('gd') . ':' . 'feedLink';
-                $feedLink = new Zend_Gdata_Extension_FeedLink();
-                $feedLink->transferFromDOM($child);
-                $this->_feedLink[] = $feedLink;
-                break;
-            default:
-                parent::takeChildFromDOM($child);
-                break;
-        }
-    }
-
-    /**
      * Retrieve the email list property for this entry.
      *
      * @see setEmailList
@@ -209,6 +182,33 @@ class Zend_Gdata_Gapps_EmailListEntry extends Zend_Gdata_Entry
     {
         $this->_feedLink = $value;
         return $this;
+    }
+
+    /**
+     * Creates individual Entry objects of the appropriate type and
+     * stores them as members of this entry based upon DOM data.
+     *
+     * @param DOMNode $child The DOMNode to process
+     */
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('apps') . ':' . 'emailList';
+                $emailList = new Zend_Gdata_Gapps_Extension_EmailList();
+                $emailList->transferFromDOM($child);
+                $this->_emailList = $emailList;
+                break;
+            case $this->lookupNamespace('gd') . ':' . 'feedLink';
+                $feedLink = new Zend_Gdata_Extension_FeedLink();
+                $feedLink->transferFromDOM($child);
+                $this->_feedLink[] = $feedLink;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 }

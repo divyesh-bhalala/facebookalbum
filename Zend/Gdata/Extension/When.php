@@ -50,7 +50,7 @@ class Zend_Gdata_Extension_When extends Zend_Gdata_Extension
     protected $_endTime = null;
 
     public function __construct($startTime = null, $endTime = null,
-            $valueString = null, $reminders = null)
+                                $valueString = null, $reminders = null)
     {
         parent::__construct();
         $this->_startTime = $startTime;
@@ -74,42 +74,10 @@ class Zend_Gdata_Extension_When extends Zend_Gdata_Extension
         if ($this->_reminders !== null) {
             foreach ($this->_reminders as $reminder) {
                 $element->appendChild(
-                        $reminder->getDOM($element->ownerDocument));
+                    $reminder->getDOM($element->ownerDocument));
             }
         }
         return $element;
-    }
-
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-            case $this->lookupNamespace('gd') . ':' . 'reminder';
-                $reminder = new Zend_Gdata_Extension_Reminder();
-                $reminder->transferFromDOM($child);
-                $this->_reminders[] = $reminder;
-                break;
-        default:
-            parent::takeChildFromDOM($child);
-            break;
-        }
-    }
-
-    protected function takeAttributeFromDOM($attribute)
-    {
-        switch ($attribute->localName) {
-            case 'startTime':
-                $this->_startTime = $attribute->nodeValue;
-                break;
-            case 'endTime':
-                $this->_endTime = $attribute->nodeValue;
-                break;
-            case 'valueString':
-                $this->_valueString = $attribute->nodeValue;
-                break;
-            default:
-                parent::takeAttributeFromDOM($attribute);
-        }
     }
 
     public function __toString()
@@ -118,7 +86,7 @@ class Zend_Gdata_Extension_When extends Zend_Gdata_Extension
             return $this->_valueString;
         else {
             return 'Starts: ' . $this->getStartTime() . ' ' .
-                   'Ends: ' .  $this->getEndTime();
+            'Ends: ' . $this->getEndTime();
         }
     }
 
@@ -164,6 +132,38 @@ class Zend_Gdata_Extension_When extends Zend_Gdata_Extension
     {
         $this->_reminders = $value;
         return $this;
+    }
+
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('gd') . ':' . 'reminder';
+                $reminder = new Zend_Gdata_Extension_Reminder();
+                $reminder->transferFromDOM($child);
+                $this->_reminders[] = $reminder;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
+    }
+
+    protected function takeAttributeFromDOM($attribute)
+    {
+        switch ($attribute->localName) {
+            case 'startTime':
+                $this->_startTime = $attribute->nodeValue;
+                break;
+            case 'endTime':
+                $this->_endTime = $attribute->nodeValue;
+                break;
+            case 'valueString':
+                $this->_valueString = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 }

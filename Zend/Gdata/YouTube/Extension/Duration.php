@@ -44,7 +44,7 @@ class Zend_Gdata_YouTube_Extension_Duration extends Zend_Gdata_Extension
 
     /**
      * Constructs a new Zend_Gdata_YouTube_Extension_Duration object.
-     * @param bool $seconds(optional) The seconds value of the element.
+     * @param bool $seconds (optional) The seconds value of the element.
      */
     public function __construct($seconds = null)
     {
@@ -70,24 +70,6 @@ class Zend_Gdata_YouTube_Extension_Duration extends Zend_Gdata_Extension
             $element->setAttribute('seconds', $this->_seconds);
         }
         return $element;
-    }
-
-    /**
-     * Given a DOMNode representing an attribute, tries to map the data into
-     * instance members.  If no mapping is defined, the name and valueare
-     * stored in an array.
-     *
-     * @param DOMNode $attribute The DOMNode attribute needed to be handled
-     */
-    protected function takeAttributeFromDOM($attribute)
-    {
-        switch ($attribute->localName) {
-        case 'seconds':
-            $this->_seconds = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
     }
 
     /**
@@ -121,6 +103,24 @@ class Zend_Gdata_YouTube_Extension_Duration extends Zend_Gdata_Extension
     public function __toString()
     {
         return $this->_seconds;
+    }
+
+    /**
+     * Given a DOMNode representing an attribute, tries to map the data into
+     * instance members.  If no mapping is defined, the name and valueare
+     * stored in an array.
+     *
+     * @param DOMNode $attribute The DOMNode attribute needed to be handled
+     */
+    protected function takeAttributeFromDOM($attribute)
+    {
+        switch ($attribute->localName) {
+            case 'seconds':
+                $this->_seconds = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 }

@@ -91,24 +91,13 @@ class Zend_Gdata_YouTube_ContactEntry extends Zend_Gdata_YouTube_UserProfileEntr
     }
 
     /**
-     * Creates individual Entry objects of the appropriate type and
-     * stores them in the $_entry array based upon DOM data.
+     * Returns the status
      *
-     * @param DOMNode $child The DOMNode to process
+     * @return Zend_Gdata_YouTube_Extension_Status  The status
      */
-    protected function takeChildFromDOM($child)
+    public function getStatus()
     {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-        case $this->lookupNamespace('yt') . ':' . 'status':
-            $status = new Zend_Gdata_YouTube_Extension_Status();
-            $status->transferFromDOM($child);
-            $this->_status = $status;
-            break;
-        default:
-            parent::takeChildFromDOM($child);
-            break;
-        }
+        return $this->_status;
     }
 
     /**
@@ -124,13 +113,24 @@ class Zend_Gdata_YouTube_ContactEntry extends Zend_Gdata_YouTube_UserProfileEntr
     }
 
     /**
-     * Returns the status
+     * Creates individual Entry objects of the appropriate type and
+     * stores them in the $_entry array based upon DOM data.
      *
-     * @return Zend_Gdata_YouTube_Extension_Status  The status
+     * @param DOMNode $child The DOMNode to process
      */
-    public function getStatus()
+    protected function takeChildFromDOM($child)
     {
-        return $this->_status;
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('yt') . ':' . 'status':
+                $status = new Zend_Gdata_YouTube_Extension_Status();
+                $status->transferFromDOM($child);
+                $this->_status = $status;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 }

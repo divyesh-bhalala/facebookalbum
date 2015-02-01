@@ -37,7 +37,7 @@ abstract class Zend_Loader_AutoloaderFactory
     protected static $loaders = array();
 
     /**
-     * @var Zend_Loader_StandardAutoloader StandardAutoloader instance for resolving 
+     * @var Zend_Loader_StandardAutoloader StandardAutoloader instance for resolving
      * autoloader classes via the include_path
      */
     protected static $standardAutoloader;
@@ -93,7 +93,7 @@ abstract class Zend_Loader_AutoloaderFactory
                 if (!class_exists($class) && !$autoloader->autoload($class)) {
                     require_once 'Exception/InvalidArgumentException.php';
                     throw new Zend_Loader_Exception_InvalidArgumentException(sprintf(
-                        'Autoloader class "%s" not loaded', 
+                        'Autoloader class "%s" not loaded',
                         $class
                     ));
                 }
@@ -101,10 +101,10 @@ abstract class Zend_Loader_AutoloaderFactory
                 // unfortunately is_subclass_of is broken on some 5.3 versions
                 // additionally instanceof is also broken for this use case
                 if (version_compare(PHP_VERSION, '5.3.7', '>=')) {
-                        if (!is_subclass_of($class, 'Zend_Loader_SplAutoloader')) {
+                    if (!is_subclass_of($class, 'Zend_Loader_SplAutoloader')) {
                         require_once 'Exception/InvalidArgumentException.php';
                         throw new Zend_Loader_Exception_InvalidArgumentException(sprintf(
-                            'Autoloader class %s must implement Zend\\Loader\\SplAutoloader', 
+                            'Autoloader class %s must implement Zend\\Loader\\SplAutoloader',
                             $class
                         ));
                     }
@@ -124,15 +124,29 @@ abstract class Zend_Loader_AutoloaderFactory
     }
 
     /**
-     * Get an list of all autoloaders registered with the factory
+     * Get an instance of the standard autoloader
      *
-     * Returns an array of autoloader instances.
+     * Used to attempt to resolve autoloader classes, using the
+     * StandardAutoloader. The instance is marked as a fallback autoloader, to
+     * allow resolving autoloaders not under the "Zend" or "Zend" namespaces.
      *
-     * @return array
+     * @return Zend_Loader_SplAutoloader
      */
-    public static function getRegisteredAutoloaders()
+    protected static function getStandardAutoloader()
     {
-        return self::$loaders;
+        if (null !== self::$standardAutoloader) {
+            return self::$standardAutoloader;
+        }
+
+        // Extract the filename from the classname
+        $stdAutoloader = substr(strrchr(self::STANDARD_AUTOLOADER, '_'), 1);
+
+        if (!class_exists(self::STANDARD_AUTOLOADER)) {
+            require_once dirname(__FILE__) . "/$stdAutoloader.php";
+        }
+        $loader = new Zend_Loader_StandardAutoloader();
+        self::$standardAutoloader = $loader;
+        return self::$standardAutoloader;
     }
 
     /**
@@ -166,6 +180,18 @@ abstract class Zend_Loader_AutoloaderFactory
     }
 
     /**
+     * Get an list of all autoloaders registered with the factory
+     *
+     * Returns an array of autoloader instances.
+     *
+     * @return array
+     */
+    public static function getRegisteredAutoloaders()
+    {
+        return self::$loaders;
+    }
+
+    /**
      * Unregister a single autoloader by class name
      *
      * @param  string $autoloaderClass
@@ -181,31 +207,5 @@ abstract class Zend_Loader_AutoloaderFactory
         spl_autoload_unregister(array($autoloader, 'autoload'));
         unset(self::$loaders[$autoloaderClass]);
         return true;
-    }
-
-    /**
-     * Get an instance of the standard autoloader
-     *
-     * Used to attempt to resolve autoloader classes, using the 
-     * StandardAutoloader. The instance is marked as a fallback autoloader, to 
-     * allow resolving autoloaders not under the "Zend" or "Zend" namespaces.
-     * 
-     * @return Zend_Loader_SplAutoloader
-     */
-    protected static function getStandardAutoloader()
-    {
-        if (null !== self::$standardAutoloader) {
-            return self::$standardAutoloader;
-        }
-
-        // Extract the filename from the classname
-        $stdAutoloader = substr(strrchr(self::STANDARD_AUTOLOADER, '_'), 1);
-
-        if (!class_exists(self::STANDARD_AUTOLOADER)) {
-            require_once dirname(__FILE__) . "/$stdAutoloader.php";
-        }
-        $loader = new Zend_Loader_StandardAutoloader();
-        self::$standardAutoloader = $loader;
-        return self::$standardAutoloader;
     }
 }

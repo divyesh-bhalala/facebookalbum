@@ -73,21 +73,6 @@ class Zend_Gdata_Calendar_ListFeed extends Zend_Gdata_Feed
         return $element;
     }
 
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-        case $this->lookupNamespace('gCal') . ':' . 'timezone';
-            $timezone = new Zend_Gdata_Calendar_Extension_Timezone();
-            $timezone->transferFromDOM($child);
-            $this->_timezone = $timezone;
-            break;
-        default:
-            parent::takeChildFromDOM($child);
-            break;
-        }
-    }
-
     public function getTimezone()
     {
         return $this->_timezone;
@@ -101,6 +86,21 @@ class Zend_Gdata_Calendar_ListFeed extends Zend_Gdata_Feed
     {
         $this->_timezone = $value;
         return $this;
+    }
+
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('gCal') . ':' . 'timezone';
+                $timezone = new Zend_Gdata_Calendar_Extension_Timezone();
+                $timezone->transferFromDOM($child);
+                $this->_timezone = $timezone;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 }

@@ -101,48 +101,12 @@ class Zend_Gdata_Gapps_Extension_Name extends Zend_Gdata_Extension
     }
 
     /**
-     * Given a DOMNode representing an attribute, tries to map the data into
-     * instance members.  If no mapping is defined, the name and value are
-     * stored in an array.
-     *
-     * @param DOMNode $attribute The DOMNode attribute needed to be handled
+     * Magic toString method allows using this directly via echo
+     * Works best in PHP >= 4.2.0
      */
-    protected function takeAttributeFromDOM($attribute)
+    public function __toString()
     {
-        switch ($attribute->localName) {
-        case 'familyName':
-            $this->_familyName = $attribute->nodeValue;
-            break;
-        case 'givenName':
-            $this->_givenName = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
-    }
-
-    /**
-     * Get the value for this element's familyName attribute.
-     *
-     * @see setFamilyName
-     * @return string The requested attribute.
-     */
-    public function getFamilyName()
-    {
-        return $this->_familyName;
-    }
-
-    /**
-     * Set the value for this element's familyName attribute. This
-     * represents a user's family name.
-     *
-     * @param string $value The desired value for this attribute.
-     * @return Zend_Gdata_Gapps_Extension_Name Provides a fluent interface..
-     */
-    public function setFamilyName($value)
-    {
-        $this->_familyName = $value;
-        return $this;
+        return $this->getGivenName() . ' ' . $this->getFamilyName();
     }
 
     /**
@@ -170,12 +134,48 @@ class Zend_Gdata_Gapps_Extension_Name extends Zend_Gdata_Extension
     }
 
     /**
-     * Magic toString method allows using this directly via echo
-     * Works best in PHP >= 4.2.0
+     * Get the value for this element's familyName attribute.
+     *
+     * @see setFamilyName
+     * @return string The requested attribute.
      */
-    public function __toString()
+    public function getFamilyName()
     {
-        return $this->getGivenName() . ' ' . $this->getFamilyName();
+        return $this->_familyName;
+    }
+
+    /**
+     * Set the value for this element's familyName attribute. This
+     * represents a user's family name.
+     *
+     * @param string $value The desired value for this attribute.
+     * @return Zend_Gdata_Gapps_Extension_Name Provides a fluent interface..
+     */
+    public function setFamilyName($value)
+    {
+        $this->_familyName = $value;
+        return $this;
+    }
+
+    /**
+     * Given a DOMNode representing an attribute, tries to map the data into
+     * instance members.  If no mapping is defined, the name and value are
+     * stored in an array.
+     *
+     * @param DOMNode $attribute The DOMNode attribute needed to be handled
+     */
+    protected function takeAttributeFromDOM($attribute)
+    {
+        switch ($attribute->localName) {
+            case 'familyName':
+                $this->_familyName = $attribute->nodeValue;
+                break;
+            case 'givenName':
+                $this->_givenName = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 }

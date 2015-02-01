@@ -91,25 +91,6 @@ class Zend_Gdata_Geo_Extension_GeoRssWhere extends Zend_Gdata_Extension
     }
 
     /**
-     * Creates individual Entry objects of the appropriate type and
-     * stores them as members of this entry based upon DOM data.
-     *
-     * @param DOMNode $child The DOMNode to process
-     */
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-
-        switch ($absoluteNodeName) {
-            case $this->lookupNamespace('gml') . ':' . 'Point';
-                $point = new Zend_Gdata_Geo_Extension_GmlPoint();
-                $point->transferFromDOM($child);
-                $this->_point = $point;
-                break;
-        }
-    }
-
-    /**
      * Get the value for this element's point attribute.
      *
      * @see setPoint
@@ -130,6 +111,25 @@ class Zend_Gdata_Geo_Extension_GeoRssWhere extends Zend_Gdata_Extension
     {
         $this->_point = $value;
         return $this;
+    }
+
+    /**
+     * Creates individual Entry objects of the appropriate type and
+     * stores them as members of this entry based upon DOM data.
+     *
+     * @param DOMNode $child The DOMNode to process
+     */
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('gml') . ':' . 'Point';
+                $point = new Zend_Gdata_Geo_Extension_GmlPoint();
+                $point->transferFromDOM($child);
+                $this->_point = $point;
+                break;
+        }
     }
 
 }

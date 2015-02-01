@@ -78,24 +78,13 @@ class Zend_Gdata_YouTube_Extension_Control extends Zend_Gdata_App_Extension_Cont
     }
 
     /**
-     * Creates individual Entry objects of the appropriate type and
-     * stores them as members of this entry based upon DOM data.
+     * Get the value of this element's state attribute.
      *
-     * @param DOMNode $child The DOMNode to process
+     * @return string The state's text value
      */
-    protected function takeChildFromDOM($child)
+    public function getStateValue()
     {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-        case $this->lookupNamespace('yt') . ':' . 'state':
-            $state = new Zend_Gdata_YouTube_Extension_State();
-            $state->transferFromDOM($child);
-            $this->_state = $state;
-            break;
-        default:
-            parent::takeChildFromDOM($child);
-            break;
-        }
+        return $this->getState()->getText();
     }
 
     /**
@@ -121,13 +110,24 @@ class Zend_Gdata_YouTube_Extension_Control extends Zend_Gdata_App_Extension_Cont
     }
 
     /**
-    * Get the value of this element's state attribute.
-    *
-    * @return string The state's text value
-    */
-    public function getStateValue()
+     * Creates individual Entry objects of the appropriate type and
+     * stores them as members of this entry based upon DOM data.
+     *
+     * @param DOMNode $child The DOMNode to process
+     */
+    protected function takeChildFromDOM($child)
     {
-      return $this->getState()->getText();
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('yt') . ':' . 'state':
+                $state = new Zend_Gdata_YouTube_Extension_State();
+                $state->transferFromDOM($child);
+                $this->_state = $state;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 }

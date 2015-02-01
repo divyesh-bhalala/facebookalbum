@@ -146,57 +146,6 @@ class Zend_Gdata_YouTube_Extension_MediaGroup extends Zend_Gdata_Media_Extension
     }
 
     /**
-     * Creates individual Entry objects of the appropriate type and
-     * stores them in the $_entry array based upon DOM data.
-     *
-     * @param DOMNode $child The DOMNode to process
-     */
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-            case $this->lookupNamespace('media') . ':' . 'content':
-                $content = new Zend_Gdata_YouTube_Extension_MediaContent();
-                $content->transferFromDOM($child);
-                $this->_content[] = $content;
-                break;
-            case $this->lookupNamespace('media') . ':' . 'rating':
-                $mediarating = new Zend_Gdata_YouTube_Extension_MediaRating();
-                $mediarating->transferFromDOM($child);
-                $this->_mediarating = $mediarating;
-                break;
-            case $this->lookupNamespace('media') . ':' . 'credit':
-                $mediacredit = new Zend_Gdata_YouTube_Extension_MediaCredit();
-                $mediacredit->transferFromDOM($child);
-                $this->_mediacredit = $mediacredit;
-                break;
-            case $this->lookupNamespace('yt') . ':' . 'duration':
-                $duration = new Zend_Gdata_YouTube_Extension_Duration();
-                $duration->transferFromDOM($child);
-                $this->_duration = $duration;
-                break;
-            case $this->lookupNamespace('yt') . ':' . 'private':
-                $private = new Zend_Gdata_YouTube_Extension_Private();
-                $private->transferFromDOM($child);
-                $this->_private = $private;
-                break;
-            case $this->lookupNamespace('yt') . ':' . 'videoid':
-                $videoid = new Zend_Gdata_YouTube_Extension_VideoId();
-                $videoid ->transferFromDOM($child);
-                $this->_videoid = $videoid;
-                break;
-            case $this->lookupNamespace('yt') . ':' . 'uploaded':
-                $uploaded = new Zend_Gdata_YouTube_Extension_Uploaded();
-                $uploaded ->transferFromDOM($child);
-                $this->_uploaded = $uploaded;
-                break;
-        default:
-            parent::takeChildFromDOM($child);
-            break;
-        }
-    }
-
-    /**
      * Returns the duration value of this element
      *
      * @return Zend_Gdata_YouTube_Extension_Duration
@@ -332,5 +281,56 @@ class Zend_Gdata_YouTube_Extension_MediaGroup extends Zend_Gdata_Media_Extension
     {
         $this->_mediacredit = $value;
         return $this;
+    }
+
+    /**
+     * Creates individual Entry objects of the appropriate type and
+     * stores them in the $_entry array based upon DOM data.
+     *
+     * @param DOMNode $child The DOMNode to process
+     */
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('media') . ':' . 'content':
+                $content = new Zend_Gdata_YouTube_Extension_MediaContent();
+                $content->transferFromDOM($child);
+                $this->_content[] = $content;
+                break;
+            case $this->lookupNamespace('media') . ':' . 'rating':
+                $mediarating = new Zend_Gdata_YouTube_Extension_MediaRating();
+                $mediarating->transferFromDOM($child);
+                $this->_mediarating = $mediarating;
+                break;
+            case $this->lookupNamespace('media') . ':' . 'credit':
+                $mediacredit = new Zend_Gdata_YouTube_Extension_MediaCredit();
+                $mediacredit->transferFromDOM($child);
+                $this->_mediacredit = $mediacredit;
+                break;
+            case $this->lookupNamespace('yt') . ':' . 'duration':
+                $duration = new Zend_Gdata_YouTube_Extension_Duration();
+                $duration->transferFromDOM($child);
+                $this->_duration = $duration;
+                break;
+            case $this->lookupNamespace('yt') . ':' . 'private':
+                $private = new Zend_Gdata_YouTube_Extension_Private();
+                $private->transferFromDOM($child);
+                $this->_private = $private;
+                break;
+            case $this->lookupNamespace('yt') . ':' . 'videoid':
+                $videoid = new Zend_Gdata_YouTube_Extension_VideoId();
+                $videoid->transferFromDOM($child);
+                $this->_videoid = $videoid;
+                break;
+            case $this->lookupNamespace('yt') . ':' . 'uploaded':
+                $uploaded = new Zend_Gdata_YouTube_Extension_Uploaded();
+                $uploaded->transferFromDOM($child);
+                $this->_uploaded = $uploaded;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 }

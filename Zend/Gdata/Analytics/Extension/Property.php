@@ -50,25 +50,30 @@ class Zend_Gdata_Analytics_Extension_Property extends Zend_Gdata_Extension
     }
 
     /**
-     * Given a DOMNode representing an attribute, tries to map the data into
-     * instance members.  If no mapping is defined, the name and value are
-     * stored in an array.
-     *
-     * @param DOMNode $attribute The DOMNode attribute needed to be handled
+     * @return string
      */
-    protected function takeAttributeFromDOM($attribute)
+    public function getName()
     {
-        switch ($attribute->localName) {
-            case 'name':
-                $name = explode(':', $attribute->nodeValue);
-                $this->_name = end($name);
-                break;
-            case 'value':
-                $this->_value = $attribute->nodeValue;
-                break;
-            default:
-                parent::takeAttributeFromDOM($attribute);
-        }
+        return $this->_name;
+    }
+
+    /**
+     * @param string $name
+     * @return Zend_Gdata_Analytics_Extension_Property
+     */
+    public function setName($name)
+    {
+        $this->_name = $name;
+        return $this;
+    }
+
+    /**
+     * Magic toString method allows using this directly via echo
+     * Works best in PHP >= 4.2.0
+     */
+    public function __toString()
+    {
+        return $this->getValue();
     }
 
     /**
@@ -94,29 +99,24 @@ class Zend_Gdata_Analytics_Extension_Property extends Zend_Gdata_Extension
     }
 
     /**
-     * @param string $name
-     * @return Zend_Gdata_Analytics_Extension_Property
+     * Given a DOMNode representing an attribute, tries to map the data into
+     * instance members.  If no mapping is defined, the name and value are
+     * stored in an array.
+     *
+     * @param DOMNode $attribute The DOMNode attribute needed to be handled
      */
-    public function setName($name)
+    protected function takeAttributeFromDOM($attribute)
     {
-        $this->_name = $name;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->_name;
-    }
-
-    /**
-     * Magic toString method allows using this directly via echo
-     * Works best in PHP >= 4.2.0
-     */
-    public function __toString()
-    {
-        return $this->getValue();
+        switch ($attribute->localName) {
+            case 'name':
+                $name = explode(':', $attribute->nodeValue);
+                $this->_name = end($name);
+                break;
+            case 'value':
+                $this->_value = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 }

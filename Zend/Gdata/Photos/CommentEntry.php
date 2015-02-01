@@ -121,33 +121,6 @@ class Zend_Gdata_Photos_CommentEntry extends Zend_Gdata_Entry
     }
 
     /**
-     * Creates individual Entry objects of the appropriate type and
-     * stores them as members of this entry based upon DOM data.
-     *
-     * @param DOMNode $child The DOMNode to process
-     */
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-
-        switch ($absoluteNodeName) {
-            case $this->lookupNamespace('gphoto') . ':' . 'id';
-                $id = new Zend_Gdata_Photos_Extension_Id();
-                $id->transferFromDOM($child);
-                $this->_gphotoId = $id;
-                break;
-            case $this->lookupNamespace('gphoto') . ':' . 'photoid';
-                $photoid = new Zend_Gdata_Photos_Extension_PhotoId();
-                $photoid->transferFromDOM($child);
-                $this->_gphotoPhotoId = $photoid;
-                break;
-            default:
-                parent::takeChildFromDOM($child);
-                break;
-        }
-    }
-
-    /**
      * Get the value for this element's gphoto:photoid attribute.
      *
      * @see setGphotoPhotoId
@@ -191,5 +164,32 @@ class Zend_Gdata_Photos_CommentEntry extends Zend_Gdata_Entry
     {
         $this->_gphotoId = $value;
         return $this;
+    }
+
+    /**
+     * Creates individual Entry objects of the appropriate type and
+     * stores them as members of this entry based upon DOM data.
+     *
+     * @param DOMNode $child The DOMNode to process
+     */
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('gphoto') . ':' . 'id';
+                $id = new Zend_Gdata_Photos_Extension_Id();
+                $id->transferFromDOM($child);
+                $this->_gphotoId = $id;
+                break;
+            case $this->lookupNamespace('gphoto') . ':' . 'photoid';
+                $photoid = new Zend_Gdata_Photos_Extension_PhotoId();
+                $photoid->transferFromDOM($child);
+                $this->_gphotoPhotoId = $photoid;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 }

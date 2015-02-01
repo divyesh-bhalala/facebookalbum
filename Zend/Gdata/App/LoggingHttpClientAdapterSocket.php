@@ -49,6 +49,20 @@ class Zend_Gdata_App_LoggingHttpClientAdapterSocket extends Zend_Http_Client_Ada
     protected $log_handle = null;
 
     /**
+     * Connect to the remote server
+     *
+     * @param string $host
+     * @param int $port
+     * @param boolean $secure
+     * @param int $timeout
+     */
+    public function connect($host, $port = 80, $secure = false)
+    {
+        $this->log("Connecting to: ${host}:${port}");
+        return parent::connect($host, $port, $secure);
+    }
+
+    /**
      * Log the given message to the log file.  The log file is configured
      * as the config param 'logfile'.  This method opens the file for
      * writing if necessary.
@@ -64,27 +78,13 @@ class Zend_Gdata_App_LoggingHttpClientAdapterSocket extends Zend_Http_Client_Ada
     }
 
     /**
-     * Connect to the remote server
-     *
-     * @param string  $host
-     * @param int     $port
-     * @param boolean $secure
-     * @param int     $timeout
-     */
-    public function connect($host, $port = 80, $secure = false)
-    {
-        $this->log("Connecting to: ${host}:${port}");
-        return parent::connect($host, $port, $secure);
-    }
-
-    /**
      * Send request to the remote server
      *
-     * @param string        $method
+     * @param string $method
      * @param Zend_Uri_Http $uri
-     * @param string        $http_ver
-     * @param array         $headers
-     * @param string        $body
+     * @param string $http_ver
+     * @param array $headers
+     * @param string $body
      * @return string Request as string
      */
     public function write($method, $uri, $http_ver = '1.1', $headers = array(), $body = '')

@@ -68,8 +68,8 @@ class Zend_Gdata_YouTube_Extension_MediaCredit extends Zend_Gdata_Extension
      * @param string $role
      * @param string $scheme
      */
-    public function __construct($text = null, $role = null,  $scheme = null,
-        $yttype = null)
+    public function __construct($text = null, $role = null, $scheme = null,
+                                $yttype = null)
     {
         $this->registerAllNamespaces(Zend_Gdata_Media::$namespaces);
         parent::__construct();
@@ -103,30 +103,6 @@ class Zend_Gdata_YouTube_Extension_MediaCredit extends Zend_Gdata_Extension
                 'yt:type', $this->_yttype);
         }
         return $element;
-    }
-
-    /**
-     * Given a DOMNode representing an attribute, tries to map the data into
-     * instance members.  If no mapping is defined, the name and value are
-     * stored in an array.
-     *
-     * @param DOMNode $attribute The DOMNode attribute needed to be handled
-     */
-    protected function takeAttributeFromDOM($attribute)
-    {
-        switch ($attribute->localName) {
-            case 'role':
-                $this->_role = $attribute->nodeValue;
-                break;
-            case 'scheme':
-                $this->_scheme = $attribute->nodeValue;
-                break;
-            case 'type':
-                $this->_yttype = $attribute->nodeValue;
-                break;
-            default:
-                parent::takeAttributeFromDOM($attribute);
-        }
     }
 
     /**
@@ -184,6 +160,30 @@ class Zend_Gdata_YouTube_Extension_MediaCredit extends Zend_Gdata_Extension
     {
         $this->_yttype = $value;
         return $this;
+    }
+
+    /**
+     * Given a DOMNode representing an attribute, tries to map the data into
+     * instance members.  If no mapping is defined, the name and value are
+     * stored in an array.
+     *
+     * @param DOMNode $attribute The DOMNode attribute needed to be handled
+     */
+    protected function takeAttributeFromDOM($attribute)
+    {
+        switch ($attribute->localName) {
+            case 'role':
+                $this->_role = $attribute->nodeValue;
+                break;
+            case 'scheme':
+                $this->_scheme = $attribute->nodeValue;
+                break;
+            case 'type':
+                $this->_yttype = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 }

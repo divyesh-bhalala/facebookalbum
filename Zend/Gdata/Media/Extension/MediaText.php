@@ -71,7 +71,7 @@ class Zend_Gdata_Media_Extension_MediaText extends Zend_Gdata_Extension
      * @param string $end
      */
     public function __construct($text = null, $type = null, $lang = null,
-            $start = null, $end = null)
+                                $start = null, $end = null)
     {
         $this->registerAllNamespaces(Zend_Gdata_Media::$namespaces);
         parent::__construct();
@@ -108,33 +108,6 @@ class Zend_Gdata_Media_Extension_MediaText extends Zend_Gdata_Extension
             $element->setAttribute('end', $this->_end);
         }
         return $element;
-    }
-
-    /**
-     * Given a DOMNode representing an attribute, tries to map the data into
-     * instance members.  If no mapping is defined, the name and value are
-     * stored in an array.
-     *
-     * @param DOMNode $attribute The DOMNode attribute needed to be handled
-     */
-    protected function takeAttributeFromDOM($attribute)
-    {
-        switch ($attribute->localName) {
-        case 'type':
-            $this->_type = $attribute->nodeValue;
-            break;
-        case 'lang':
-            $this->_lang = $attribute->nodeValue;
-            break;
-        case 'start':
-            $this->_start = $attribute->nodeValue;
-            break;
-        case 'end':
-            $this->_end = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
     }
 
     /**
@@ -207,5 +180,32 @@ class Zend_Gdata_Media_Extension_MediaText extends Zend_Gdata_Extension
     {
         $this->_end = $value;
         return $this;
+    }
+
+    /**
+     * Given a DOMNode representing an attribute, tries to map the data into
+     * instance members.  If no mapping is defined, the name and value are
+     * stored in an array.
+     *
+     * @param DOMNode $attribute The DOMNode attribute needed to be handled
+     */
+    protected function takeAttributeFromDOM($attribute)
+    {
+        switch ($attribute->localName) {
+            case 'type':
+                $this->_type = $attribute->nodeValue;
+                break;
+            case 'lang':
+                $this->_lang = $attribute->nodeValue;
+                break;
+            case 'start':
+                $this->_start = $attribute->nodeValue;
+                break;
+            case 'end':
+                $this->_end = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 }

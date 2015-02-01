@@ -51,7 +51,7 @@ class Zend_Gdata_YouTube_Extension_Link extends Zend_Gdata_App_Extension_Link
      * @param Zend_Gdata_YouTube_Extension_Token $token
      */
     public function __construct($href = null, $rel = null, $type = null,
-            $hrefLang = null, $title = null, $length = null, $token = null)
+                                $hrefLang = null, $title = null, $length = null, $token = null)
     {
         $this->registerAllNamespaces(Zend_Gdata_YouTube::$namespaces);
         parent::__construct($href, $rel, $type, $hrefLang, $title, $length);
@@ -78,24 +78,13 @@ class Zend_Gdata_YouTube_Extension_Link extends Zend_Gdata_App_Extension_Link
     }
 
     /**
-     * Creates individual Entry objects of the appropriate type and
-     * stores them as members of this entry based upon DOM data.
+     * Get the value of this element's token attribute.
      *
-     * @param DOMNode $child The DOMNode to process
+     * @return string The token's text value
      */
-    protected function takeChildFromDOM($child)
+    public function getTokenValue()
     {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-        case $this->lookupNamespace('yt') . ':' . 'token':
-            $token = new Zend_Gdata_YouTube_Extension_Token();
-            $token->transferFromDOM($child);
-            $this->_token = $token;
-            break;
-        default:
-            parent::takeChildFromDOM($child);
-            break;
-        }
+        return $this->getToken()->getText();
     }
 
     /**
@@ -121,13 +110,24 @@ class Zend_Gdata_YouTube_Extension_Link extends Zend_Gdata_App_Extension_Link
     }
 
     /**
-    * Get the value of this element's token attribute.
-    *
-    * @return string The token's text value
-    */
-    public function getTokenValue()
+     * Creates individual Entry objects of the appropriate type and
+     * stores them as members of this entry based upon DOM data.
+     *
+     * @param DOMNode $child The DOMNode to process
+     */
+    protected function takeChildFromDOM($child)
     {
-      return $this->getToken()->getText();
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('yt') . ':' . 'token':
+                $token = new Zend_Gdata_YouTube_Extension_Token();
+                $token->transferFromDOM($child);
+                $this->_token = $token;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 }

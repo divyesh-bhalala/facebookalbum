@@ -76,23 +76,6 @@ class Zend_Gdata_Books_Extension_Viewability extends Zend_Gdata_Extension
     }
 
     /**
-     * Extracts XML attributes from the DOM and converts them to the
-     * appropriate object members.
-     *
-     * @param DOMNode $attribute The DOMNode attribute to be handled.
-     */
-    protected function takeAttributeFromDOM($attribute)
-    {
-        switch ($attribute->localName) {
-        case 'value':
-            $this->_value = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
-    }
-
-    /**
      * Returns the programmatic value that describes the viewability of a volume
      * in Google Book Search
      *
@@ -116,6 +99,23 @@ class Zend_Gdata_Books_Extension_Viewability extends Zend_Gdata_Extension
     {
         $this->_value = $value;
         return $this;
+    }
+
+    /**
+     * Extracts XML attributes from the DOM and converts them to the
+     * appropriate object members.
+     *
+     * @param DOMNode $attribute The DOMNode attribute to be handled.
+     */
+    protected function takeAttributeFromDOM($attribute)
+    {
+        switch ($attribute->localName) {
+            case 'value':
+                $this->_value = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 

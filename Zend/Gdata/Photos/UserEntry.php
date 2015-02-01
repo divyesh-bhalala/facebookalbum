@@ -179,53 +179,6 @@ class Zend_Gdata_Photos_UserEntry extends Zend_Gdata_Entry
     }
 
     /**
-     * Creates individual Entry objects of the appropriate type and
-     * stores them as members of this entry based upon DOM data.
-     *
-     * @param DOMNode $child The DOMNode to process
-     */
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-
-        switch ($absoluteNodeName) {
-            case $this->lookupNamespace('gphoto') . ':' . 'nickname';
-                $nickname = new Zend_Gdata_Photos_Extension_Nickname();
-                $nickname->transferFromDOM($child);
-                $this->_gphotoNickname = $nickname;
-                break;
-            case $this->lookupNamespace('gphoto') . ':' . 'thumbnail';
-                $thumbnail = new Zend_Gdata_Photos_Extension_Thumbnail();
-                $thumbnail->transferFromDOM($child);
-                $this->_gphotoThumbnail = $thumbnail;
-                break;
-            case $this->lookupNamespace('gphoto') . ':' . 'user';
-                $user = new Zend_Gdata_Photos_Extension_User();
-                $user->transferFromDOM($child);
-                $this->_gphotoUser = $user;
-                break;
-            case $this->lookupNamespace('gphoto') . ':' . 'quotacurrent';
-                $quotaCurrent = new Zend_Gdata_Photos_Extension_QuotaCurrent();
-                $quotaCurrent->transferFromDOM($child);
-                $this->_gphotoQuotaCurrent = $quotaCurrent;
-                break;
-            case $this->lookupNamespace('gphoto') . ':' . 'quotalimit';
-                $quotaLimit = new Zend_Gdata_Photos_Extension_QuotaLimit();
-                $quotaLimit->transferFromDOM($child);
-                $this->_gphotoQuotaLimit = $quotaLimit;
-                break;
-            case $this->lookupNamespace('gphoto') . ':' . 'maxPhotosPerAlbum';
-                $maxPhotosPerAlbum = new Zend_Gdata_Photos_Extension_MaxPhotosPerAlbum();
-                $maxPhotosPerAlbum->transferFromDOM($child);
-                $this->_gphotoMaxPhotosPerAlbum = $maxPhotosPerAlbum;
-                break;
-            default:
-                parent::takeChildFromDOM($child);
-                break;
-        }
-    }
-
-    /**
      * Get the value for this element's gphoto:nickname attribute.
      *
      * @see setGphotoNickname
@@ -361,6 +314,53 @@ class Zend_Gdata_Photos_UserEntry extends Zend_Gdata_Entry
     {
         $this->_gphotoUser = $value;
         return $this;
+    }
+
+    /**
+     * Creates individual Entry objects of the appropriate type and
+     * stores them as members of this entry based upon DOM data.
+     *
+     * @param DOMNode $child The DOMNode to process
+     */
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('gphoto') . ':' . 'nickname';
+                $nickname = new Zend_Gdata_Photos_Extension_Nickname();
+                $nickname->transferFromDOM($child);
+                $this->_gphotoNickname = $nickname;
+                break;
+            case $this->lookupNamespace('gphoto') . ':' . 'thumbnail';
+                $thumbnail = new Zend_Gdata_Photos_Extension_Thumbnail();
+                $thumbnail->transferFromDOM($child);
+                $this->_gphotoThumbnail = $thumbnail;
+                break;
+            case $this->lookupNamespace('gphoto') . ':' . 'user';
+                $user = new Zend_Gdata_Photos_Extension_User();
+                $user->transferFromDOM($child);
+                $this->_gphotoUser = $user;
+                break;
+            case $this->lookupNamespace('gphoto') . ':' . 'quotacurrent';
+                $quotaCurrent = new Zend_Gdata_Photos_Extension_QuotaCurrent();
+                $quotaCurrent->transferFromDOM($child);
+                $this->_gphotoQuotaCurrent = $quotaCurrent;
+                break;
+            case $this->lookupNamespace('gphoto') . ':' . 'quotalimit';
+                $quotaLimit = new Zend_Gdata_Photos_Extension_QuotaLimit();
+                $quotaLimit->transferFromDOM($child);
+                $this->_gphotoQuotaLimit = $quotaLimit;
+                break;
+            case $this->lookupNamespace('gphoto') . ':' . 'maxPhotosPerAlbum';
+                $maxPhotosPerAlbum = new Zend_Gdata_Photos_Extension_MaxPhotosPerAlbum();
+                $maxPhotosPerAlbum->transferFromDOM($child);
+                $this->_gphotoMaxPhotosPerAlbum = $maxPhotosPerAlbum;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 }

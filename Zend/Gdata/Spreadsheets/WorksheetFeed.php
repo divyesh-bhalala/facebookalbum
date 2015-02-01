@@ -38,6 +38,19 @@ class Zend_Gdata_Spreadsheets_WorksheetFeed extends Zend_Gdata_Feed
 {
 
     /**
+     * The classname for individual feed elements.
+     *
+     * @var string
+     */
+    protected $_entryClassName = 'Zend_Gdata_Spreadsheets_WorksheetEntry';
+    /**
+     * The classname for the feed.
+     *
+     * @var string
+     */
+    protected $_feedClassName = 'Zend_Gdata_Spreadsheets_WorksheetFeed';
+
+    /**
      * Constructs a new Zend_Gdata_Spreadsheets_WorksheetFeed object.
      * @param DOMElement $element (optional) The DOMElement on whick to base this element.
      */
@@ -46,19 +59,5 @@ class Zend_Gdata_Spreadsheets_WorksheetFeed extends Zend_Gdata_Feed
         $this->registerAllNamespaces(Zend_Gdata_Spreadsheets::$namespaces);
         parent::__construct($element);
     }
-
-    /**
-     * The classname for individual feed elements.
-     *
-     * @var string
-     */
-    protected $_entryClassName = 'Zend_Gdata_Spreadsheets_WorksheetEntry';
-
-    /**
-     * The classname for the feed.
-     *
-     * @var string
-     */
-    protected $_feedClassName = 'Zend_Gdata_Spreadsheets_WorksheetFeed';
 
 }

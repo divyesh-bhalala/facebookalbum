@@ -148,46 +148,6 @@ class Zend_Gdata_App_Entry extends Zend_Gdata_App_FeedEntryParent
         return $element;
     }
 
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-        case $this->lookupNamespace('atom') . ':' . 'content':
-            $content = new Zend_Gdata_App_Extension_Content();
-            $content->transferFromDOM($child);
-            $this->_content = $content;
-            break;
-        case $this->lookupNamespace('atom') . ':' . 'published':
-            $published = new Zend_Gdata_App_Extension_Published();
-            $published->transferFromDOM($child);
-            $this->_published = $published;
-            break;
-        case $this->lookupNamespace('atom') . ':' . 'source':
-            $source = new Zend_Gdata_App_Extension_Source();
-            $source->transferFromDOM($child);
-            $this->_source = $source;
-            break;
-        case $this->lookupNamespace('atom') . ':' . 'summary':
-            $summary = new Zend_Gdata_App_Extension_Summary();
-            $summary->transferFromDOM($child);
-            $this->_summary = $summary;
-            break;
-        case $this->lookupNamespace('app') . ':' . 'control':
-            $control = new Zend_Gdata_App_Extension_Control();
-            $control->transferFromDOM($child);
-            $this->_control = $control;
-            break;
-        case $this->lookupNamespace('app') . ':' . 'edited':
-            $edited = new Zend_Gdata_App_Extension_Edited();
-            $edited->transferFromDOM($child);
-            $this->_edited = $edited;
-            break;
-        default:
-            parent::takeChildFromDOM($child);
-            break;
-        }
-    }
-
     /**
      * Uploads changes in this entry to the server using Zend_Gdata_App
      *
@@ -204,9 +164,9 @@ class Zend_Gdata_App_Entry extends Zend_Gdata_App_FeedEntryParent
     public function save($uri = null, $className = null, $extraHeaders = array())
     {
         return $this->getService()->updateEntry($this,
-                                                $uri,
-                                                $className,
-                                                $extraHeaders);
+            $uri,
+            $className,
+            $extraHeaders);
     }
 
     /**
@@ -254,8 +214,9 @@ class Zend_Gdata_App_Entry extends Zend_Gdata_App_FeedEntryParent
         // Append ETag, if present (Gdata v2 and above, only) and doesn't
         // conflict with existing headers
         if ($this->_etag != null
-                && !array_key_exists('If-Match', $extraHeaders)
-                && !array_key_exists('If-None-Match', $extraHeaders)) {
+            && !array_key_exists('If-Match', $extraHeaders)
+            && !array_key_exists('If-None-Match', $extraHeaders)
+        ) {
             $extraHeaders['If-None-Match'] = $this->_etag;
         }
 
@@ -384,6 +345,46 @@ class Zend_Gdata_App_Entry extends Zend_Gdata_App_FeedEntryParent
     {
         $this->_control = $value;
         return $this;
+    }
+
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('atom') . ':' . 'content':
+                $content = new Zend_Gdata_App_Extension_Content();
+                $content->transferFromDOM($child);
+                $this->_content = $content;
+                break;
+            case $this->lookupNamespace('atom') . ':' . 'published':
+                $published = new Zend_Gdata_App_Extension_Published();
+                $published->transferFromDOM($child);
+                $this->_published = $published;
+                break;
+            case $this->lookupNamespace('atom') . ':' . 'source':
+                $source = new Zend_Gdata_App_Extension_Source();
+                $source->transferFromDOM($child);
+                $this->_source = $source;
+                break;
+            case $this->lookupNamespace('atom') . ':' . 'summary':
+                $summary = new Zend_Gdata_App_Extension_Summary();
+                $summary->transferFromDOM($child);
+                $this->_summary = $summary;
+                break;
+            case $this->lookupNamespace('app') . ':' . 'control':
+                $control = new Zend_Gdata_App_Extension_Control();
+                $control->transferFromDOM($child);
+                $this->_control = $control;
+                break;
+            case $this->lookupNamespace('app') . ':' . 'edited':
+                $edited = new Zend_Gdata_App_Extension_Edited();
+                $edited->transferFromDOM($child);
+                $this->_edited = $edited;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 }

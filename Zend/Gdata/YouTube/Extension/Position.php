@@ -54,16 +54,6 @@ class Zend_Gdata_YouTube_Extension_Position extends Zend_Gdata_Extension
     }
 
     /**
-     * Get the value for the position in the playlist
-     *
-     * @return int The 1-based position in the playlist
-     */
-    public function getValue()
-    {
-        return $this->_text;
-    }
-
-    /**
      * Set the value for the position in the playlist
      *
      * @param int $value The 1-based position in the playlist
@@ -84,6 +74,16 @@ class Zend_Gdata_YouTube_Extension_Position extends Zend_Gdata_Extension
     public function __toString()
     {
         return $this->getValue();
+    }
+
+    /**
+     * Get the value for the position in the playlist
+     *
+     * @return int The 1-based position in the playlist
+     */
+    public function getValue()
+    {
+        return $this->_text;
     }
 
 }

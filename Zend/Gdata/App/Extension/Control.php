@@ -62,21 +62,6 @@ class Zend_Gdata_App_Extension_Control extends Zend_Gdata_App_Extension
         return $element;
     }
 
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-        case $this->lookupNamespace('app') . ':' . 'draft':
-            $draft = new Zend_Gdata_App_Extension_Draft();
-            $draft->transferFromDOM($child);
-            $this->_draft = $draft;
-            break;
-        default:
-            parent::takeChildFromDOM($child);
-            break;
-        }
-    }
-
     /**
      * @return Zend_Gdata_App_Extension_Draft
      */
@@ -93,6 +78,21 @@ class Zend_Gdata_App_Extension_Control extends Zend_Gdata_App_Extension
     {
         $this->_draft = $value;
         return $this;
+    }
+
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('app') . ':' . 'draft':
+                $draft = new Zend_Gdata_App_Extension_Draft();
+                $draft->transferFromDOM($child);
+                $this->_draft = $draft;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 }

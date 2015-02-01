@@ -138,38 +138,17 @@ class Zend_Gdata_YouTube_PlaylistListEntry extends Zend_Gdata_Entry
     }
 
     /**
-     * Creates individual Entry objects of the appropriate type and
-     * stores them in the $_entry array based upon DOM data.
+     * Returns the description relating to the video.
      *
-     * @param DOMNode $child The DOMNode to process
+     * @return Zend_Gdata_YouTube_Extension_Description  The description
+     *         relating to the video
      */
-    protected function takeChildFromDOM($child)
+    public function getDescription()
     {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-        case $this->lookupNamespace('yt') . ':' . 'description':
-            $description = new Zend_Gdata_YouTube_Extension_Description();
-            $description->transferFromDOM($child);
-            $this->_description = $description;
-            break;
-        case $this->lookupNamespace('yt') . ':' . 'countHint':
-            $countHint = new Zend_Gdata_YouTube_Extension_CountHint();
-            $countHint->transferFromDOM($child);
-            $this->_countHint = $countHint;
-            break;
-        case $this->lookupNamespace('yt') . ':' . 'playlistId':
-            $playlistId = new Zend_Gdata_YouTube_Extension_PlaylistId();
-            $playlistId->transferFromDOM($child);
-            $this->_playlistId = $playlistId;
-            break;
-        case $this->lookupNamespace('gd') . ':' . 'feedLink':
-            $feedLink = new Zend_Gdata_Extension_FeedLink();
-            $feedLink->transferFromDOM($child);
-            $this->_feedLink[] = $feedLink;
-            break;
-        default:
-            parent::takeChildFromDOM($child);
-            break;
+        if ($this->getMajorProtocolVersion() >= 2) {
+            return $this->getSummary();
+        } else {
+            return $this->_description;
         }
     }
 
@@ -191,21 +170,6 @@ class Zend_Gdata_YouTube_PlaylistListEntry extends Zend_Gdata_Entry
     }
 
     /**
-     * Returns the description relating to the video.
-     *
-     * @return Zend_Gdata_YouTube_Extension_Description  The description
-     *         relating to the video
-     */
-    public function getDescription()
-    {
-        if ($this->getMajorProtocolVersion() >= 2) {
-            return $this->getSummary();
-        } else {
-            return $this->_description;
-        }
-    }
-
-    /**
      * Returns the countHint relating to the playlist.
      *
      * The countHint is the number of videos on a playlist.
@@ -217,7 +181,8 @@ class Zend_Gdata_YouTube_PlaylistListEntry extends Zend_Gdata_Entry
     public function getCountHint()
     {
         if (($this->getMajorProtocolVersion() == null) ||
-            ($this->getMajorProtocolVersion() == 1)) {
+            ($this->getMajorProtocolVersion() == 1)
+        ) {
             require_once 'Zend/Gdata/App/VersionException.php';
             throw new Zend_Gdata_App_VersionException('The yt:countHint ' .
                 'element is not supported in versions earlier than 2.');
@@ -235,7 +200,8 @@ class Zend_Gdata_YouTube_PlaylistListEntry extends Zend_Gdata_Entry
     public function getPlaylistId()
     {
         if (($this->getMajorProtocolVersion() == null) ||
-            ($this->getMajorProtocolVersion() == 1)) {
+            ($this->getMajorProtocolVersion() == 1)
+        ) {
             require_once 'Zend/Gdata/App/VersionException.php';
             throw new Zend_Gdata_App_VersionException('The yt:playlistId ' .
                 'element is not supported in versions earlier than 2.');
@@ -245,15 +211,17 @@ class Zend_Gdata_YouTube_PlaylistListEntry extends Zend_Gdata_Entry
     }
 
     /**
-     * Sets the array of embedded feeds related to the playlist
+     * Returns the URL of the playlist video feed
      *
-     * @param array $feedLink The array of embedded feeds relating to the video
-     * @return Zend_Gdata_YouTube_PlaylistListEntry Provides a fluent interface
+     * @return string The URL of the playlist video feed
      */
-    public function setFeedLink($feedLink = null)
+    public function getPlaylistVideoFeedUrl()
     {
-        $this->_feedLink = $feedLink;
-        return $this;
+        if ($this->getMajorProtocolVersion() >= 2) {
+            return $this->getContent()->getSrc();
+        } else {
+            return $this->getFeedLink(Zend_Gdata_YouTube::PLAYLIST_REL)->href;
+        }
     }
 
     /**
@@ -284,16 +252,50 @@ class Zend_Gdata_YouTube_PlaylistListEntry extends Zend_Gdata_Entry
     }
 
     /**
-     * Returns the URL of the playlist video feed
+     * Sets the array of embedded feeds related to the playlist
      *
-     * @return string The URL of the playlist video feed
+     * @param array $feedLink The array of embedded feeds relating to the video
+     * @return Zend_Gdata_YouTube_PlaylistListEntry Provides a fluent interface
      */
-    public function getPlaylistVideoFeedUrl()
+    public function setFeedLink($feedLink = null)
     {
-        if ($this->getMajorProtocolVersion() >= 2) {
-            return $this->getContent()->getSrc();
-        } else {
-            return $this->getFeedLink(Zend_Gdata_YouTube::PLAYLIST_REL)->href;
+        $this->_feedLink = $feedLink;
+        return $this;
+    }
+
+    /**
+     * Creates individual Entry objects of the appropriate type and
+     * stores them in the $_entry array based upon DOM data.
+     *
+     * @param DOMNode $child The DOMNode to process
+     */
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('yt') . ':' . 'description':
+                $description = new Zend_Gdata_YouTube_Extension_Description();
+                $description->transferFromDOM($child);
+                $this->_description = $description;
+                break;
+            case $this->lookupNamespace('yt') . ':' . 'countHint':
+                $countHint = new Zend_Gdata_YouTube_Extension_CountHint();
+                $countHint->transferFromDOM($child);
+                $this->_countHint = $countHint;
+                break;
+            case $this->lookupNamespace('yt') . ':' . 'playlistId':
+                $playlistId = new Zend_Gdata_YouTube_Extension_PlaylistId();
+                $playlistId->transferFromDOM($child);
+                $this->_playlistId = $playlistId;
+                break;
+            case $this->lookupNamespace('gd') . ':' . 'feedLink':
+                $feedLink = new Zend_Gdata_Extension_FeedLink();
+                $feedLink->transferFromDOM($child);
+                $this->_feedLink[] = $feedLink;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
         }
     }
 

@@ -62,20 +62,6 @@ class Zend_Gdata_App_Extension_Generator extends Zend_Gdata_App_Extension
         return $element;
     }
 
-    protected function takeAttributeFromDOM($attribute)
-    {
-        switch ($attribute->localName) {
-        case 'uri':
-            $this->_uri = $attribute->nodeValue;
-            break;
-        case 'version':
-            $this->_version= $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
-    }
-
     /**
      * @return Zend_Gdata_App_Extension_Uri
      */
@@ -110,6 +96,20 @@ class Zend_Gdata_App_Extension_Generator extends Zend_Gdata_App_Extension
     {
         $this->_version = $value;
         return $this;
+    }
+
+    protected function takeAttributeFromDOM($attribute)
+    {
+        switch ($attribute->localName) {
+            case 'uri':
+                $this->_uri = $attribute->nodeValue;
+                break;
+            case 'version':
+                $this->_version = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 }

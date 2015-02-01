@@ -100,24 +100,15 @@ class Zend_Gdata_Gapps_Extension_Property extends Zend_Gdata_Extension
     }
 
     /**
-     * Given a DOMNode representing an attribute, tries to map the data into
-     * instance members.  If no mapping is defined, the name and value are
-     * stored in an array.
+     * Magic toString method allows using this directly via echo
+     * Works best in PHP >= 4.2.0
      *
-     * @param DOMNode $attribute The DOMNode attribute needed to be handled
+     * @return string
      */
-    protected function takeAttributeFromDOM($attribute)
+    public function __toString()
     {
-        switch ($attribute->localName) {
-        case 'name':
-            $this->_name = $attribute->nodeValue;
-            break;
-        case 'value':
-            $this->_value = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
+        return "Property Name: " . $this->getName() .
+        "\nProperty Value: " . $this->getValue();
     }
 
     /**
@@ -166,14 +157,23 @@ class Zend_Gdata_Gapps_Extension_Property extends Zend_Gdata_Extension
     }
 
     /**
-     * Magic toString method allows using this directly via echo
-     * Works best in PHP >= 4.2.0
+     * Given a DOMNode representing an attribute, tries to map the data into
+     * instance members.  If no mapping is defined, the name and value are
+     * stored in an array.
      *
-     * @return string
+     * @param DOMNode $attribute The DOMNode attribute needed to be handled
      */
-    public function __toString()
+    protected function takeAttributeFromDOM($attribute)
     {
-        return "Property Name: " . $this->getName() .
-               "\nProperty Value: " . $this->getValue();
+        switch ($attribute->localName) {
+            case 'name':
+                $this->_name = $attribute->nodeValue;
+                break;
+            case 'value':
+                $this->_value = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 }

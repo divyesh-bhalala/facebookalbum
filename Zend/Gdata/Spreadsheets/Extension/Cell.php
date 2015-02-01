@@ -103,26 +103,6 @@ class Zend_Gdata_Spreadsheets_Extension_Cell extends Zend_Gdata_Extension
         return $element;
     }
 
-    protected function takeAttributeFromDOM($attribute)
-    {
-        switch ($attribute->localName) {
-        case 'row':
-            $this->_row = $attribute->nodeValue;
-            break;
-        case 'col':
-            $this->_col = $attribute->nodeValue;
-            break;
-        case 'inputValue':
-            $this->_inputValue = $attribute->nodeValue;
-            break;
-        case 'numericValue':
-            $this->_numericValue = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
-    }
-
     /**
      * Gets the row attribute of the Cell element.
      * @return string Row of the Cell.
@@ -130,6 +110,16 @@ class Zend_Gdata_Spreadsheets_Extension_Cell extends Zend_Gdata_Extension
     public function getRow()
     {
         return $this->_row;
+    }
+
+    /**
+     * Sets the row attribute of the Cell element.
+     * @param string $row New row of the Cell.
+     */
+    public function setRow($row)
+    {
+        $this->_row = $row;
+        return $this;
     }
 
     /**
@@ -151,6 +141,16 @@ class Zend_Gdata_Spreadsheets_Extension_Cell extends Zend_Gdata_Extension
     }
 
     /**
+     * Sets the input value attribute of the Cell element.
+     * @param string $inputValue New input value of the Cell.
+     */
+    public function setInputValue($inputValue)
+    {
+        $this->_inputValue = $inputValue;
+        return $this;
+    }
+
+    /**
      * Gets the numeric value attribute of the Cell element.
      * @return string Numeric value of the Cell.
      */
@@ -160,13 +160,12 @@ class Zend_Gdata_Spreadsheets_Extension_Cell extends Zend_Gdata_Extension
     }
 
     /**
-     * Sets the row attribute of the Cell element.
-     * @param string $row New row of the Cell.
+     * Sets the numeric value attribute of the Cell element.
+     * @param string $numericValue New numeric value of the Cell.
      */
-    public function setRow($row)
+    public function setNumericValue($numericValue)
     {
-        $this->_row = $row;
-        return $this;
+        $this->_numericValue = $numericValue;
     }
 
     /**
@@ -179,23 +178,24 @@ class Zend_Gdata_Spreadsheets_Extension_Cell extends Zend_Gdata_Extension
         return $this;
     }
 
-    /**
-     * Sets the input value attribute of the Cell element.
-     * @param string $inputValue New input value of the Cell.
-     */
-    public function setInputValue($inputValue)
+    protected function takeAttributeFromDOM($attribute)
     {
-        $this->_inputValue = $inputValue;
-        return $this;
-    }
-
-    /**
-     * Sets the numeric value attribute of the Cell element.
-     * @param string $numericValue New numeric value of the Cell.
-     */
-    public function setNumericValue($numericValue)
-    {
-        $this->_numericValue = $numericValue;
+        switch ($attribute->localName) {
+            case 'row':
+                $this->_row = $attribute->nodeValue;
+                break;
+            case 'col':
+                $this->_col = $attribute->nodeValue;
+                break;
+            case 'inputValue':
+                $this->_inputValue = $attribute->nodeValue;
+                break;
+            case 'numericValue':
+                $this->_numericValue = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 }

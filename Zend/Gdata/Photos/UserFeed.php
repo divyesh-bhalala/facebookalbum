@@ -109,56 +109,6 @@ class Zend_Gdata_Photos_UserFeed extends Zend_Gdata_Feed
         parent::__construct($element);
     }
 
-    /**
-     * Creates individual Entry objects of the appropriate type and
-     * stores them in the $_entry array based upon DOM data.
-     *
-     * @param DOMNode $child The DOMNode to process
-     */
-    protected function takeChildFromDOM($child)
-    {
-        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
-        switch ($absoluteNodeName) {
-            case $this->lookupNamespace('gphoto') . ':' . 'user';
-                $user = new Zend_Gdata_Photos_Extension_User();
-                $user->transferFromDOM($child);
-                $this->_gphotoUser = $user;
-                break;
-            case $this->lookupNamespace('gphoto') . ':' . 'nickname';
-                $nickname = new Zend_Gdata_Photos_Extension_Nickname();
-                $nickname->transferFromDOM($child);
-                $this->_gphotoNickname = $nickname;
-                break;
-            case $this->lookupNamespace('gphoto') . ':' . 'thumbnail';
-                $thumbnail = new Zend_Gdata_Photos_Extension_Thumbnail();
-                $thumbnail->transferFromDOM($child);
-                $this->_gphotoThumbnail = $thumbnail;
-                break;
-            case $this->lookupNamespace('atom') . ':' . 'entry':
-                $entryClassName = $this->_entryClassName;
-                $tmpEntry = new Zend_Gdata_App_Entry($child);
-                $categories = $tmpEntry->getCategory();
-                foreach ($categories as $category) {
-                    if ($category->scheme == Zend_Gdata_Photos::KIND_PATH &&
-                        $this->_entryKindClassMapping[$category->term] != "") {
-                            $entryClassName = $this->_entryKindClassMapping[$category->term];
-                            break;
-                    } else {
-                        require_once 'Zend/Gdata/App/Exception.php';
-                        throw new Zend_Gdata_App_Exception('Entry is missing kind declaration.');
-                    }
-                }
-
-                $newEntry = new $entryClassName($child);
-                $newEntry->setHttpClient($this->getHttpClient());
-                $this->_entry[] = $newEntry;
-                break;
-            default:
-                parent::takeChildFromDOM($child);
-                break;
-        }
-    }
-
     public function getDOM($doc = null, $majorVersion = 1, $minorVersion = null)
     {
         $element = parent::getDOM($doc, $majorVersion, $minorVersion);
@@ -242,6 +192,57 @@ class Zend_Gdata_Photos_UserFeed extends Zend_Gdata_Feed
     {
         $this->_gphotoThumbnail = $value;
         return $this;
+    }
+
+    /**
+     * Creates individual Entry objects of the appropriate type and
+     * stores them in the $_entry array based upon DOM data.
+     *
+     * @param DOMNode $child The DOMNode to process
+     */
+    protected function takeChildFromDOM($child)
+    {
+        $absoluteNodeName = $child->namespaceURI . ':' . $child->localName;
+        switch ($absoluteNodeName) {
+            case $this->lookupNamespace('gphoto') . ':' . 'user';
+                $user = new Zend_Gdata_Photos_Extension_User();
+                $user->transferFromDOM($child);
+                $this->_gphotoUser = $user;
+                break;
+            case $this->lookupNamespace('gphoto') . ':' . 'nickname';
+                $nickname = new Zend_Gdata_Photos_Extension_Nickname();
+                $nickname->transferFromDOM($child);
+                $this->_gphotoNickname = $nickname;
+                break;
+            case $this->lookupNamespace('gphoto') . ':' . 'thumbnail';
+                $thumbnail = new Zend_Gdata_Photos_Extension_Thumbnail();
+                $thumbnail->transferFromDOM($child);
+                $this->_gphotoThumbnail = $thumbnail;
+                break;
+            case $this->lookupNamespace('atom') . ':' . 'entry':
+                $entryClassName = $this->_entryClassName;
+                $tmpEntry = new Zend_Gdata_App_Entry($child);
+                $categories = $tmpEntry->getCategory();
+                foreach ($categories as $category) {
+                    if ($category->scheme == Zend_Gdata_Photos::KIND_PATH &&
+                        $this->_entryKindClassMapping[$category->term] != ""
+                    ) {
+                        $entryClassName = $this->_entryKindClassMapping[$category->term];
+                        break;
+                    } else {
+                        require_once 'Zend/Gdata/App/Exception.php';
+                        throw new Zend_Gdata_App_Exception('Entry is missing kind declaration.');
+                    }
+                }
+
+                $newEntry = new $entryClassName($child);
+                $newEntry->setHttpClient($this->getHttpClient());
+                $this->_entry[] = $newEntry;
+                break;
+            default:
+                parent::takeChildFromDOM($child);
+                break;
+        }
     }
 
 }

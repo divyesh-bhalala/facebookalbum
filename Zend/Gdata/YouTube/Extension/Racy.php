@@ -44,7 +44,7 @@ class Zend_Gdata_YouTube_Extension_Racy extends Zend_Gdata_Extension
 
     /**
      * Constructs a new Zend_Gdata_YouTube_Extension_Racy object.
-     * @param bool $state(optional) The state value of the element.
+     * @param bool $state (optional) The state value of the element.
      */
     public function __construct($state = null)
     {
@@ -70,24 +70,6 @@ class Zend_Gdata_YouTube_Extension_Racy extends Zend_Gdata_Extension
             $element->setAttribute('state', $this->_state);
         }
         return $element;
-    }
-
-    /**
-     * Given a DOMNode representing an attribute, tries to map the data into
-     * instance members.  If no mapping is defined, the name and value are
-     * stored in an array.
-     *
-     * @param DOMNode $attribute The DOMNode attribute needed to be handled
-     */
-    protected function takeAttributeFromDOM($attribute)
-    {
-        switch ($attribute->localName) {
-        case 'state':
-            $this->_state = $attribute->nodeValue;
-            break;
-        default:
-            parent::takeAttributeFromDOM($attribute);
-        }
     }
 
     /**
@@ -119,6 +101,24 @@ class Zend_Gdata_YouTube_Extension_Racy extends Zend_Gdata_Extension
     public function __toString()
     {
         return $this->_state;
+    }
+
+    /**
+     * Given a DOMNode representing an attribute, tries to map the data into
+     * instance members.  If no mapping is defined, the name and value are
+     * stored in an array.
+     *
+     * @param DOMNode $attribute The DOMNode attribute needed to be handled
+     */
+    protected function takeAttributeFromDOM($attribute)
+    {
+        switch ($attribute->localName) {
+            case 'state':
+                $this->_state = $attribute->nodeValue;
+                break;
+            default:
+                parent::takeAttributeFromDOM($attribute);
+        }
     }
 
 }

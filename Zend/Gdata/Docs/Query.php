@@ -81,6 +81,16 @@ class Zend_Gdata_Docs_Query extends Zend_Gdata_Query
     }
 
     /**
+     * Gets the projection for this query.
+     *
+     * @return string projection
+     */
+    public function getProjection()
+    {
+        return $this->_projection;
+    }
+
+    /**
      * Sets the projection for this query. Common values for projection
      * include 'full'.
      *
@@ -94,6 +104,16 @@ class Zend_Gdata_Docs_Query extends Zend_Gdata_Query
     }
 
     /**
+     * Gets the visibility for this query.
+     *
+     * @return string visibility
+     */
+    public function getVisibility()
+    {
+        return $this->_visibility;
+    }
+
+    /**
      * Sets the visibility for this query. Common values for visibility
      * include 'private'.
      *
@@ -103,26 +123,6 @@ class Zend_Gdata_Docs_Query extends Zend_Gdata_Query
     {
         $this->_visibility = $value;
         return $this;
-    }
-
-    /**
-     * Gets the projection for this query.
-     *
-     * @return string projection
-     */
-    public function getProjection()
-    {
-        return $this->_projection;
-    }
-
-    /**
-     * Gets the visibility for this query.
-     *
-     * @return string visibility
-     */
-    public function getVisibility()
-    {
-        return $this->_visibility;
     }
 
     /**

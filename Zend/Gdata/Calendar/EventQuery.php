@@ -108,106 +108,6 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
     }
 
     /**
-     * @see $_comments
-     * @param string $value
-     * @return Zend_Gdata_Calendar_EventQuery Provides a fluent interface
-     */
-    public function setComments($value)
-    {
-        $this->_comments = $value;
-        return $this;
-    }
-
-    /**
-     * @see $_event
-     * @param string $value
-     * @return Zend_Gdata_Calendar_EventQuery Provides a fluent interface
-     */
-    public function setEvent($value)
-    {
-        $this->_event = $value;
-        return $this;
-    }
-
-    /**
-     * @see $_projection
-     * @param string $value
-     * @return Zend_Gdata_Calendar_EventQuery Provides a fluent interface
-     */
-    public function setProjection($value)
-    {
-        $this->_projection = $value;
-        return $this;
-    }
-
-    /**
-     * @see $_user
-     * @param string $value
-     * @return Zend_Gdata_Calendar_EventQuery Provides a fluent interface
-     */
-    public function setUser($value)
-    {
-        $this->_user = $value;
-        return $this;
-    }
-
-    /**
-     * @see $_visibility
-     * @param bool $value
-     * @return Zend_Gdata_Calendar_EventQuery Provides a fluent interface
-     */
-    public function setVisibility($value)
-    {
-        $this->_visibility = $value;
-        return $this;
-    }
-
-    /**
-     * @see $_comments;
-     * @return string comments
-     */
-    public function getComments()
-    {
-        return $this->_comments;
-    }
-
-    /**
-     * @see $_event;
-     * @return string event
-     */
-    public function getEvent()
-    {
-        return $this->_event;
-    }
-
-    /**
-     * @see $_projection
-     * @return string projection
-     */
-    public function getProjection()
-    {
-        return $this->_projection;
-    }
-
-    /**
-     * @see $_user
-     * @return string user
-     */
-    public function getUser()
-    {
-        return $this->_user;
-    }
-
-    /**
-     * @see $_visibility
-     * @return string visibility
-     */
-    public function getVisibility()
-    {
-        return $this->_visibility;
-    }
-
-    /**
      * @param int $value
      * @return Zend_Gdata_Calendar_EventQuery Provides a fluent interface
      */
@@ -335,7 +235,6 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
         return $this;
     }
 
-
     /**
      * @return string recurrence-expansion-end
      */
@@ -379,8 +278,8 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
                 default:
                     require_once 'Zend/Gdata/App/Exception.php';
                     throw new Zend_Gdata_App_Exception(
-                            'Invalid query param value for futureevents: ' .
-                            $value . ' It must be a boolean.');
+                        'Invalid query param value for futureevents: ' .
+                        $value . ' It must be a boolean.');
             }
         } else {
             return null;
@@ -395,14 +294,14 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
     {
         if ($value !== null) {
             if (is_bool($value)) {
-                $this->_params['singleevents'] = ($value?'true':'false');
+                $this->_params['singleevents'] = ($value ? 'true' : 'false');
             } elseif ($value == 'true' | $value == 'false') {
                 $this->_params['singleevents'] = $value;
             } else {
                 require_once 'Zend/Gdata/App/Exception.php';
                 throw new Zend_Gdata_App_Exception(
-                        'Invalid query param value for futureevents: ' .
-                        $value . ' It must be a boolean.');
+                    'Invalid query param value for futureevents: ' .
+                    $value . ' It must be a boolean.');
             }
         } else {
             unset($this->_params['singleevents']);
@@ -427,8 +326,8 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
                 default:
                     require_once 'Zend/Gdata/App/Exception.php';
                     throw new Zend_Gdata_App_Exception(
-                            'Invalid query param value for futureevents: ' .
-                            $value . ' It must be a boolean.');
+                        'Invalid query param value for futureevents: ' .
+                        $value . ' It must be a boolean.');
             }
         } else {
             return null;
@@ -444,14 +343,14 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
     {
         if ($value !== null) {
             if (is_bool($value)) {
-                $this->_params['futureevents'] = ($value?'true':'false');
+                $this->_params['futureevents'] = ($value ? 'true' : 'false');
             } elseif ($value == 'true' | $value == 'false') {
                 $this->_params['futureevents'] = $value;
             } else {
                 require_once 'Zend/Gdata/App/Exception.php';
                 throw new Zend_Gdata_App_Exception(
-                        'Invalid query param value for futureevents: ' .
-                        $value . ' It must be a boolean.');
+                    'Invalid query param value for futureevents: ' .
+                    $value . ' It must be a boolean.');
             }
         } else {
             unset($this->_params['futureevents']);
@@ -486,6 +385,106 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
         }
         $uri .= $this->getQueryString();
         return $uri;
+    }
+
+    /**
+     * @see $_user
+     * @return string user
+     */
+    public function getUser()
+    {
+        return $this->_user;
+    }
+
+    /**
+     * @see $_user
+     * @param string $value
+     * @return Zend_Gdata_Calendar_EventQuery Provides a fluent interface
+     */
+    public function setUser($value)
+    {
+        $this->_user = $value;
+        return $this;
+    }
+
+    /**
+     * @see $_visibility
+     * @return string visibility
+     */
+    public function getVisibility()
+    {
+        return $this->_visibility;
+    }
+
+    /**
+     * @see $_visibility
+     * @param bool $value
+     * @return Zend_Gdata_Calendar_EventQuery Provides a fluent interface
+     */
+    public function setVisibility($value)
+    {
+        $this->_visibility = $value;
+        return $this;
+    }
+
+    /**
+     * @see $_projection
+     * @return string projection
+     */
+    public function getProjection()
+    {
+        return $this->_projection;
+    }
+
+    /**
+     * @see $_projection
+     * @param string $value
+     * @return Zend_Gdata_Calendar_EventQuery Provides a fluent interface
+     */
+    public function setProjection($value)
+    {
+        $this->_projection = $value;
+        return $this;
+    }
+
+    /**
+     * @see $_event;
+     * @return string event
+     */
+    public function getEvent()
+    {
+        return $this->_event;
+    }
+
+    /**
+     * @see $_event
+     * @param string $value
+     * @return Zend_Gdata_Calendar_EventQuery Provides a fluent interface
+     */
+    public function setEvent($value)
+    {
+        $this->_event = $value;
+        return $this;
+    }
+
+    /**
+     * @see $_comments;
+     * @return string comments
+     */
+    public function getComments()
+    {
+        return $this->_comments;
+    }
+
+    /**
+     * @see $_comments
+     * @param string $value
+     * @return Zend_Gdata_Calendar_EventQuery Provides a fluent interface
+     */
+    public function setComments($value)
+    {
+        $this->_comments = $value;
+        return $this;
     }
 
 }
