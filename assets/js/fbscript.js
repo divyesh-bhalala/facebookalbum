@@ -10,6 +10,7 @@ var albumidsselect = new Array();
 
 var fbAuthResp;
 var album_single = '';
+var userid='';
 
 
 $(document).ready(function () {
@@ -26,10 +27,22 @@ $(document).ready(function () {
 //Click To logout
     $('#signout').click(function () {
         FB.logout(function (response) {
-            // user is now logged out
-            window.location.reload();
-            $('#bef_login').show();
-            $("#aft_login").hide();
+            $.ajax({
+                url:'fbalbum.php',
+                type:'post',
+                data:{
+                    'removedir':userid
+                },
+                success: function(data) {
+                    window.location.reload();
+                    $('#bef_login').show();
+                    $("#aft_login").hide();
+
+                }
+
+            });
+
+
         });
     });
 
@@ -52,8 +65,6 @@ $(document).ready(function () {
     //Move All Selected
 
     $('#move_selected').click(function () {
-        alert('move_selected');
-
         var i = 0;
         $('.checkboxSelect:checked').each(function () {
 
@@ -101,29 +112,8 @@ $(document).ready(function () {
         FB.getLoginStatus(function (response) {
 
             if (response.status === 'connected') {
-                if (response.authResponse) {
-                    fbAuthResp = response;
-                    //Set Accesstoken of user in session
 
-                    $.ajax({
-                        url: 'fbalbum.php',
-                        type: 'post',
-                        data: {
-
-                            'accesstoken': response.authResponse.accessToken
-                        },
-                        success: function (data) {
-
-                        }
-                    });
-                    //alert(response.authResponse.accessToken);
-
-
-                }
-                $('#bef_login').hide();
-                $('#aft_login').show();
-                getuserprofile(response);
-                album(response);
+                userinfo(response);
 
             } else if (response.status === 'not_authorized') {
                 // The person is logged into Facebook, but not your app.
@@ -143,19 +133,37 @@ $(document).ready(function () {
 
     $(".btn_login").click(function () {
         FB.login(function (response) {
-            if (response.authResponse) {
-                var authResponse = response.authResponse;
-                $('#bef_login').hide();
-                $('#aft_login').show();
-
-                getuserprofile(response);
-
-                album(response);
-
-
-            }
+            userinfo(response);
         }, {scope: 'email,user_photos'})
     });
+
+    function userinfo(response)
+    {
+        if (response.authResponse) {
+            fbAuthResp = response;
+            //Set Accesstoken of user in session
+
+            $.ajax({
+                url: 'fbalbum.php',
+                type: 'post',
+                data: {
+
+                    'accesstoken': response.authResponse.accessToken
+                },
+                success: function (data) {
+
+                }
+            });
+            alert(response.authResponse.accessToken);
+
+
+        }
+        $('#bef_login').hide();
+        $('#profile').show();
+        $('#aft_login').show();
+        getuserprofile(response);
+        album(response);
+    }
 
 
     function getuserprofile(response) {
@@ -164,6 +172,7 @@ $(document).ready(function () {
             $('#ProfilePic').attr('src', 'http://graph.facebook.com/' + response.id + '/picture?width=500&height=500');
             // $('#ProfilePic').css('width','100%');
             document.getElementById('username').innerHTML = response.name;
+            userid=response.id;
 
 
         });
