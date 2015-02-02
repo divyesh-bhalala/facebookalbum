@@ -158,7 +158,7 @@
                     $photo_media = new Zend_Gdata_Media_Extension_MediaKeywords();
                     $photo_media->setText($photo_tags);
                     $photo_entry->mediaGroup = new Zend_Gdata_Media_Extension_MediaGroup();
-                    $photo_entry->mediaGroup->keywords = $photo_media;
+                    $photo_entry->mediaGroup->setKeywords($photo_media);
                     $album_query = $gp->newAlbumQuery();
                     $album_query->setUser($user_name);
                     $album_query->setAlbumName($new_album_name);
