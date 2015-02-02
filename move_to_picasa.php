@@ -124,7 +124,7 @@
                 function add_new_album($entry, $gp, $album_id, $album_name)
                 {
 //	$new_album_name = str_replace( " ", "_", $album_name );
-                    $new_album_name = $album_name . '_' . uniqid();
+                    $new_album_name = 'facebook_album_'.$album_name . '_' .rand(1,1111);
                     $entry->setTitle($gp->newTitle($new_album_name));
                     $entry->setSummary($gp->newSummary("Album added by Falbum"));
                     $gp->insertAlbumEntry($entry);
