@@ -3,7 +3,7 @@
 <phpunit bootstrap="Tests/bootstrap.php" colors="true">
 
     <testsuites>
-        <testsuite name="FbPress Test">
+        <testsuite name="Facebookalbum Test">
             <directory>./Tests/</directory>
         </testsuite>
     </testsuites>
