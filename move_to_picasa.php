@@ -88,8 +88,8 @@
                 {
                     $next = getCurrentUrl();
                     $scope = 'https://picasaweb.google.com/data';
-                    $secure = false;
-                    $session = true;
+                    $secure = 0;
+                    $session = 1;
                     return Zend_Gdata_AuthSub::getAuthSubTokenUri($next, $scope, $secure,
                         $session);
                 }
