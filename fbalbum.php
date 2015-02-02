@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sweet
- * Date: 24/1/15
- * Time: 10:09 AM
- */
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -132,4 +127,16 @@ if (isset($_GET['albumids_move'])) {
     if ($reponse["status"] == 1)
         print_r($_REQUEST['albumids_move']);
 
+}
+
+if(isset($_POST['removedir']))
+{
+    echo $_POST['removedir'];
+    exit;
+    $facebook->destroySession();
+    if (file_exists($_POST['removedir'].'zip')) {
+
+        unlink($_POST['removedir'].'zip');
+
+    }
 }
