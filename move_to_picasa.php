@@ -147,7 +147,6 @@
                     $file_name = $path;
                     $photo_name = rand(11, 99999);
                     $photo_caption = "Falbum";
-                    $photo_tags = "Facebook Album";
                     $fd = $gp->newMediaFileSource($file_name);
                     $fd->setContentType("image/jpeg");
                     // Create a PhotoEntry
@@ -155,10 +154,6 @@
                     $photo_entry->setMediaSource($fd);
                     $photo_entry->setTitle($gp->newTitle($photo_name));
                     $photo_entry->setSummary($gp->newSummary($photo_caption));
-                    $photo_media = new Zend_Gdata_Media_Extension_MediaKeywords();
-                    $photo_media->setText($photo_tags);
-                    $photo_entry->mediaGroup = new Zend_Gdata_Media_Extension_MediaGroup();
-                    $photo_entry->mediaGroup->_keywords=$photo_media;
                     $album_query = $gp->newAlbumQuery();
                     $album_query->setUser($user_name);
                     $album_query->setAlbumName($new_album_name);
