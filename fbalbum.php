@@ -97,6 +97,7 @@ function getfile($url, $dir)
     try {
         file_put_contents($dir . substr($url, strrpos($url, '/'), strlen($url)), file_get_contents($url));
     } catch (Exception $ex) {
+        echo $ex;
     }
 }
 
